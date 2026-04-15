@@ -1,0 +1,11 @@
+/* Moved .movie-details and .genre-chip entirely to Tailwind in PopUp.tsx */
+.close-button {
+  font-size: 32px;
+  font-weight: 800;
+  display: flex;
+  line-height: 1;
+  cursor: pointer;
+  color: black;
+  border: none;
+  background-color: white;
+}

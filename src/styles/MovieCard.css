@@ -1,0 +1,9 @@
+.p-tooltip .p-tooltip-text {
+  background: #000000 !important; /* zinc-900 */
+  color: #ffffff !important;
+  font-size: 0.85rem !important; /* text-sm */
+  font-weight: 400;
+  padding: 4px 8px;
+  border-radius: 8px;
+  box-shadow: none;
+}

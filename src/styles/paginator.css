@@ -1,0 +1,46 @@
+/* 1. Make the 3rd column/container full screen height */
+.scroller-section {
+  height: 100vh; /* Full viewport height */
+  position: sticky;
+  top: 0;
+  background-color: #000; /* Pure black background */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+}
+
+/* 2. Style the Paginator itself */
+.scroller-container .p-paginator {
+  background: #121212 !important;
+  border: none !important;
+  display: flex;
+  flex-direction: column !important; /* Force vertical */
+  height: 80%; /* Takes up most of the sidebar */
+  justify-content: center;
+  gap: 10px;
+}
+
+/* 3. Ensure the PageLinks (Years) stack vertically */
+.scroller-container .p-paginator-pages {
+  display: flex;
+  flex-direction: column !important;
+  gap: 15px;
+}
+
+/* 4. Style the Nav Buttons (Arrows) */
+.scroller-container .p-paginator-prev,
+.scroller-container .p-paginator-next {
+  color: #4b9cff !important;
+  font-size: 1.5rem !important;
+  height: 50px !important;
+  width: 50px !important;
+  transition: transform 0.2s;
+}
+
+.scroller-container .p-paginator-prev:hover {
+  transform: translateY(-3px);
+}
+.scroller-container .p-paginator-next:hover {
+  transform: translateY(3px);
+}

@@ -1,0 +1,66 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+h2 {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-size: 25px;
+}
+
+.flex-container {
+  display: flex;
+  gap: 0;
+  padding-top: 0px;
+  align-items: flex-start;
+  margin-top: 10px;
+  z-index: 3;
+}
+
+.movie-section {
+  min-height: calc(100vh - 110px);
+  margin-bottom: 10px;
+  overflow-y: auto;
+  flex: 3;
+  max-height: 90vh;
+  margin-top: 10px;
+  bottom: 5px;
+}
+.movie-section::-webkit-scrollbar {
+  display: none;
+}
+
+.watchlist-section {
+  flex: 1;
+  margin-top: 18px;
+  overflow-y: auto;
+  max-height: 90vh;
+  bottom: 5px;
+  margin-top: 10px;
+}
+.watchlist-section::-webkit-scrollbar {
+  display: none;
+}
+
+.scroller-section {
+  flex: 0.4;
+  min-width: 80px;
+  margin-top: 20px;
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+main::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+main {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.pi .pi-th-large {
+  font: black;
+}
+
+.pi .pi-list {
+  font: black;
+}

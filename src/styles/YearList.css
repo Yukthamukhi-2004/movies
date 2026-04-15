@@ -1,0 +1,55 @@
+.year-list {
+  max-height: 400px;
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.year-list::-webkit-scrollbar {
+  display: none;
+}
+
+/* Base overrides for ListBox container */
+.p-listbox {
+  background-color: white !important;
+  border: none !important;
+}
+.dark .p-listbox {
+  background-color: black !important;
+}
+
+/* Base text color for un-hovered, un-selected items */
+.p-listbox .p-listbox-item {
+  color: black !important;
+}
+.dark .p-listbox .p-listbox-item {
+  color: white !important;
+}
+
+.p-listbox .p-listbox-item:not(.p-highlight):hover {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  transition: all 0.2s ease;
+}
+
+.dark .p-listbox .p-listbox-item:not(.p-highlight):hover {
+  background-color: #101010 !important;
+  color: #ffffff !important;
+}
+
+.p-listbox .p-listbox-item.p-highlight {
+  background-color: #ffffff !important;
+  color: #fdd223 !important;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+.dark .p-listbox .p-listbox-item.p-highlight {
+  background-color: #000000 !important;
+  color: #facc15 !important;
+}
+
+.p-listbox-item:focus {
+  box-shadow: none !important;
+  outline: none !important;
+}
