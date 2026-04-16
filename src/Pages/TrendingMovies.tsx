@@ -79,7 +79,7 @@ function TrendingMovies({
     fetchMovies();
   }, [setMovies]);
   return (
-    <div className="min-h-screen bg-white dark:bg-black! p-2 md:p-4 overflow-y-auto">
+    <div className="min-h-full bg-white p-2 md:p-4 dark:bg-black!">
       {isLoading && (
         <p className="text-black dark:text-white!">Loading movies...</p>
       )}

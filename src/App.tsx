@@ -117,9 +117,9 @@ function App() {
   /*  console.log("Movies in App:", movies); */
 
   return (
-    <div className="app-container flex flex-col h-screen px-2">
-      <header className="fixed top-0 left-0 right-0 h-100px bg-white dark:bg-black! z-50 flex justify-between items-center px-8 border-b border-zinc-300 dark:border-zinc-800! transition-colors duration-300">
-        <div className="Headings">
+    <div className="app-container flex h-screen flex-col px-2">
+      <header className="z-50 flex  shrink-0 items-center justify-between border-b border-zinc-300 bg-white px-8 transition-colors duration-300 dark:border-zinc-800! dark:bg-black!">
+        <div className="flex flex-row gap-2 items-center">
           <h1
             className="text-4xl font-extrabold text-black dark:text-white! cursor-pointer hover:text-gray-600"
             onClick={() => navigate("/")}
@@ -131,7 +131,7 @@ function App() {
           </h2>
         </div>
 
-        <div className="controller flex gap-4 items-center">
+        <div className="flex gap-4 items-center">
           <ThemeToggle />
 
           <Button
@@ -149,8 +149,8 @@ function App() {
         </div>
       </header>
 
-      <main className="mt-100px flex overflow-hidden h-[calc(100vh-100px)]">
-        <div className="flex-grow:1 overflow-y-auto w-full">
+      <main className="flex min-h-0 flex-1 overflow-hidden">
+        <div className="w-full min-h-0 flex-1 overflow-y-auto">
           <Routes>
             <Route
               path="/"
