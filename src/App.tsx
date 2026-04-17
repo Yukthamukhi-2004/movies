@@ -334,6 +334,16 @@ function App() {
                               inputId={genre.key}
                               value={genre}
                               onChange={handleGenreChange}
+                              pt={{
+                                box: ({ context }) => ({
+                                  className: context.checked
+                                    ? "bg-yellow-500! border-yellow-600!" // Yellow when checked
+                                    : "bg-white dark:bg-zinc-900 border-zinc-300", // Default state
+                                }),
+                                icon: {
+                                  className: "text-white text-xs", // The actual tick mark color
+                                },
+                              }}
                               checked={selectedGenres.some(
                                 (item) => item.key === genre.key,
                               )}
@@ -354,7 +364,7 @@ function App() {
                   {selectedFilter?.code === "R" && (
                     <div>
                       <h3 className="font-bold">Rating Filter</h3>
-                      <div className="no-scrollbar">
+                      <div className="no-scrollbar!">
                         <span className="text-primary font-semibold text-sm">
                           Minimum rating: {ratingThreshold}
                         </span>
@@ -364,11 +374,11 @@ function App() {
                           pt={{
                             handle: {
                               className:
-                                "bg-yellow-500 border-2 border-yellow-600 w-3 h-3 -mt-[4px] rounded-full cursor-pointer hover:bg-yellow-600 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400",
+                                "bg-yellow-500! border-2 border-yellow-600! w-3 h-3 -mt-[4px] rounded-full cursor-pointer hover:bg-yellow-600! transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400!",
                             },
                             range: {
                               className:
-                                "bg-yellow-400 h-full absolute rounded-full",
+                                "bg-yellow-400! h-full absolute rounded-full",
                             },
                             root: {
                               className:

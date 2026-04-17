@@ -44,7 +44,7 @@ const MovieCard = ({
           mouseTrack
           mouseTrackTop={15}
           position="top"
-          showDelay={100}
+          showDelay={0}
           hideDelay={100}
         />
         <Card
@@ -132,7 +132,7 @@ const MovieCard = ({
                 pt={{
                   root: {
                     className:
-                      "flex items-center justify-center p-2 rounded-lg border-2 border-transparent text-black dark:!text-white hover:border-black dark:!hover:border-white transition-all",
+                      "flex items-center justify-center p-2 rounded-lg border-2 border-transparent text-black dark:!text-white hover:border-white dark:!hover:border-black transition-all",
                   },
                   label: { className: "hidden" },
                   icon: { className: "text-xl" },
@@ -147,7 +147,7 @@ const MovieCard = ({
                 pt={{
                   root: {
                     className:
-                      "flex items-center gap-2 px-3 py-2 text-black dark:!text-white px-2 py-1 rounded-lg border-2 border-transparent hover:border-black dark:!hover:border-white transition-all",
+                      "flex items-center gap-2 px-3 py-2 text-black dark:!text-white px-2 py-1 rounded-lg border-2 border-transparent hover:border-white dark:!hover:border-black transition-all",
                   },
                   label: { className: "font-bold tracking-wide" },
                 }}
