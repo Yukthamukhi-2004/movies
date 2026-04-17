@@ -24,7 +24,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-xl transition-all border border-zinc-300 dark:border-zinc-600 shadow-md bg-white dark:!bg-zinc-800 text-black dark:!text-white hover:bg-gray-100 dark:!hover:bg-zinc-700 flex items-center justify-center cursor-pointer"
+      className="p-2 rounded-xl transition-all   bg-white dark:!bg-zinc-800 text-black dark:!text-white hover:bg-gray-100 dark:!hover:bg-zinc-700 flex items-center justify-center cursor-pointer"
       aria-label="Toggle Dark Mode"
     >
       {isDark ? (

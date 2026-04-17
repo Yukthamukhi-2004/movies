@@ -11,7 +11,7 @@ interface WatchlistProps {
 
 function WatchList({ items, onRemove, onClear }: WatchlistProps) {
   return (
-    <div className="top-0 mx-auto h-[90%] items-center text-black dark:!text-white transition-colors duration-300">
+    <div className="top-0 mx-auto h-[80%] items-center text-black dark:!text-white transition-colors rounded-xl duration-300">
       <h2 className="px-6 font-bold text-black dark:!text-white">
         My WatchList ({items.length})
       </h2>
@@ -34,11 +34,15 @@ function WatchList({ items, onRemove, onClear }: WatchlistProps) {
               return (
                 <li
                   key={item.movie.ids.trakt}
-                  className="bg-white dark:!bg-zinc-800 text-black dark:!text-white border-gray-300 dark:!border-zinc-700 border shadow-md"
+                  className="bg-white dark:!bg-zinc-800 text-black dark:!text-white border-gray-300 dark:!border-zinc-700 border shadow-md rounded-xl overflow-hidden p-2"
                 >
                   <div className="moviebox">
-                    <div className="imagebox">
-                      <img src={posterUrl} alt={item.movie.title} />
+                    <div className="h-80px">
+                      <img
+                        src={posterUrl}
+                        alt={item.movie.title}
+                        className="w-full  object-cover rounded-lg"
+                      />
                     </div>
                     <div style={{ fontSize: "1.1rem" }}>
                       <strong>{item.movie.title}</strong>

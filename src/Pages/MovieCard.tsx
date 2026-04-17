@@ -50,42 +50,61 @@ const MovieCard = ({
         <Card
           unstyled
           className={`overflow-hidden hover:scale-[1.01] transition-transform border shadow-md ${
-            isListView ? "w-full" : "flex flex-col"
+            isListView ? "w-70% gap-4 h-[120px] " : "flex flex-col h-full gap-2"
           } bg-white dark:bg-zinc-900 border-gray-300 dark:border-zinc-700 rounded-xl`}
           pt={{
-            root: { className: "flex flex-col h-full" },
-            body: { className: "p-4 flex flex-col flex-grow" }, // This styles the actual container
+            root: {
+              className: `flex h-full ${isListView ? "flex-row" : "flex-col"}`,
+            },
+            body: {
+              className: "p-4 flex flex-col flex-grow min-w-0 overflow-hidden",
+            }, // This styles the actual container
             content: { className: "p-0" }, // Removes default padding that might be ruining your layout
           }}
           header={
             <div
               className={
-                isListView ? "w-180px h-90% shrink-0" : "w-full aspect-2/3"
+                isListView
+                  ? "w-[200px] min-w-[100px] h-90% m-2 shrink-0 overflow-hidden rounded-l-xl"
+                  : "w-90% aspect-2/3 overflow-hidden "
               }
             >
               <Image
                 src={posterUrl}
                 alt={item.movie.title}
-                className="w-full h-full"
-                imageClassName="w-full h-full object-cover"
+                unstyled
+                pt={{
+                  root: { className: "block w-full h-full" },
+                  image: {
+                    className: "w-full h-full object-cover block rounded-xl",
+                  },
+                }}
               />
             </div>
           }
         >
-          <div className="flex flex-col gap-1">
-            <span className="text-sm text-gray-700 dark:text-gray-300!">
+          <div
+            className={
+              isListView
+                ? "flex flex-col justify-items-start py-4 gap-6"
+                : " flex flex-col text-center items-center gap-1.5 my-8 "
+            }
+          >
+            <span className="text-sm text-gray-700 dark:text-gray-300! ">
               Released on: {formattedReleaseDate}
             </span>
 
-            <strong
-              className=" movie-title-tooltip text-xl md:text-2xl text-black dark:text-white! font-bold cursor-pointer hover:underline truncate"
-              data-pr-tooltip={item.movie.title}
-              onClick={() => handleShowInfo(item)}
-            >
-              {item.movie.title || "Untitled"}
-            </strong>
+            <div className="w-full overflow-hidden">
+              <strong
+                className="movie-title-tooltip text-xl md:text-2xl text-black dark:text-white! font-bold cursor-pointer hover:underline truncate"
+                data-pr-tooltip={item.movie.title}
+                onClick={() => handleShowInfo(item)}
+              >
+                {item.movie.title || "Untitled"}
+              </strong>
+            </div>
 
-            <div className="text-sm text-gray-500 dark:text-white! flex items-center gap-2">
+            <div className="text-sm text-gray-500 dark:text-white! flex items-center gap-4">
               <span>{item.movie.year || "N/A"}</span>
               <span>
                 | ⭐ {item.movie.rating ? item.movie.rating.toFixed(1) : "N/A"}
@@ -103,9 +122,7 @@ const MovieCard = ({
               )}
             </div>
 
-            <div
-              className={`mt-4 flex items-center ${isListView ? "justify-between w-full" : "justify-start"}`}
-            >
+            <div className={`mt-4 flex ${isListView ? "gap-350" : " gap-34"}`}>
               <Button
                 icon="pi pi-info-circle"
                 onClick={() => handleShowInfo(item)}

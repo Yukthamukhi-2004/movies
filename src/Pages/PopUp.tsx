@@ -91,10 +91,14 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
         {movie ? (
           <div className="bg-white dark:!bg-black top-0 transition-colors duration-300">
             <div className="bg-white dark:!bg-black sticky">
-              <div className="movie-details bg-white dark:!bg-black text-black dark:!text-white transition-colors duration-300">
+              <div className="movie-details bg-white dark:!bg-black text-black dark:!text-white p-4 items-center transition-colors duration-300">
                 <div
                   className="main-details"
-                  style={{ display: "flex", flexDirection: "row" }}
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyItems: "end",
+                  }}
                 >
                   <div className="image">
                     {posterUrl && (
@@ -103,7 +107,7 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
                         alt="Poster"
                         style={{
                           width: "100%",
-                          maxHeight: "300px",
+                          maxHeight: "250px",
                           objectFit: "contain",
                         }}
                       />
@@ -125,7 +129,7 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
                   </div>
                 </div>
 
-                <p className="font-black dark:!font-black font-medium">
+                <p className="font-black dark:!font-black font-medium ml-2">
                   <strong>Overview : </strong>
                   {movie.movie.overview || "No overview available"}
                 </p>
@@ -139,6 +143,7 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
                       height: "900px",
                       overflow: "hidden",
                       marginBottom: "10px",
+                      alignItems: "center",
                     }}
                   >
                     {/* ✅ Only render iframe after 300ms delay */}

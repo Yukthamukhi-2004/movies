@@ -37,15 +37,15 @@ function YearsList({ movies, onYearChange, selectedYear }: ScrollerProps) {
           value={selectedYear}
           onChange={(e) => onYearChange(e.value)}
           options={uniqueYears}
-          className="w-full h-250px overflow-y-auto border-none shadow-none"
+          className="w-full h-180px overflow-y-auto border-none shadow-none"
           pt={{
             root: { className: "bg-transparent border-none" },
             wrapper: { className: "bg-transparent dark:bg-zinc-900" },
             item: (props) => ({
               className: `p-3 text-center transition-all ${
                 props?.context?.selected
-                  ? "bg-yellow-500! text-white!"
-                  : "text-black dark:text-white hover:bg-gray-100 dark:hover:bg-zinc-800"
+                  ? "bg-white! text-yellow-500! dark:bg-black! dark:text-yellow-500!"
+                  : "text-black dark:text-white hover:text-black-xl dark:hover:bg-zinc-800"
               }`,
             }),
           }}

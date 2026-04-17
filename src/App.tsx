@@ -43,7 +43,7 @@ function App() {
   const [movies, setMovies] = useState<TraktMovies[]>([]);
   const [watchlist, setWatchlist] = useState<TraktMovies[]>([]);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
-  const isListView = false;
+  const [isListView, setIsListView] = useState<boolean>(false);
   const [selectedGenres, setSelectedGenres] = useState<
     { name: string; key: string }[]
   >([]);
@@ -119,7 +119,7 @@ function App() {
   return (
     <div className="app-container flex h-screen flex-col px-2">
       <header className="z-50 flex  shrink-0 items-center justify-between border-b border-zinc-300 bg-white px-8 transition-colors duration-300 dark:border-zinc-800! dark:bg-black!">
-        <div className="flex flex-row gap-2 items-center">
+        <div className="flex flex-col gap-2 items-center">
           <h1
             className="text-4xl font-extrabold text-black dark:text-white! cursor-pointer hover:text-gray-600"
             onClick={() => navigate("/")}
@@ -131,20 +131,102 @@ function App() {
           </h2>
         </div>
 
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-6 items-center">
           <ThemeToggle />
+
+          <Button
+            label="Home"
+            icon={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+                />
+              </svg>
+            }
+            onClick={() => navigate("/")}
+            unstyled
+            pt={{
+              icons: {
+                classname: " text:black dark:text-white!",
+              },
+              root: {
+                className: "flex items-center gap-2 bg-white dark:bg-black!",
+              },
+            }}
+          />
 
           <Button
             label="Filter"
             icon="pi pi-filter"
             onClick={() => setOpenFilters(!openFilters)}
             unstyled
-            className="border:black dark:border-white! hover:black dark:hover:border-white-500! focus:outline-2-black dark:focus:outline-white-500!"
+            className="border:black dark:border-white! hover:black dark:hover:border-white-500! "
           />
           <Button
             label={`WatchList (${watchlist.length})`}
             icon="pi pi-eye"
             onClick={() => navigate("/watchlist")}
+            unstyled
+            pt={{
+              root: {
+                className: "flex items-center gap-2 bg-white dark:bg-black!",
+              },
+            }}
+          />
+          <Button
+            label={isListView ? "GridView" : "ListView"}
+            unstyled
+            pt={{
+              icon: {
+                className: "text-black dark:text-white",
+              },
+              root: {
+                className: "flex items-center gap-2 bg-white dark:bg-black!",
+              },
+            }}
+            icon={
+              isListView ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+                  />
+                </svg>
+              )
+            }
+            onClick={() => setIsListView(!isListView)}
           />
         </div>
       </header>
@@ -188,12 +270,21 @@ function App() {
               <h2 className="font-bold">Filters</h2>
               <Button
                 icon="pi pi-times"
-                className="p-button-rounded p-button-text p-button-plain"
+                unstyled
+                pt={{
+                  root: {
+                    className:
+                      "p-button-rounded p-button-text p-button-plain bg-white! dark:bg-black!",
+                  },
+                  icon: {
+                    className: "text-black! dark:text-white!",
+                  },
+                }}
                 onClick={() => setOpenFilters(false)}
               />
             </div>
 
-            <div className="flex-grow overflow-y-auto p-4">
+            <div className="flex-grow:1 overflow-y-auto p-4">
               <ListBox
                 value={selectedFilter}
                 onChange={(e) => setSelectedFilter(e.value)}
@@ -207,7 +298,7 @@ function App() {
                 {/* YEAR FILTER (Code Y) */}
                 {selectedFilter?.code === "Y" && (
                   <div className="animate-fade-in">
-                    <h3 className="font-bold mb-3 text-sm text-zinc-500 uppercase tracking-wider">
+                    <h3 className="block font-bold mb-3 text-sm text-zinc-500 pl-8 uppercase tracking-wider">
                       Select Year
                     </h3>
                     <YearsList
@@ -222,7 +313,7 @@ function App() {
                 {selectedFilter?.code === "G" && (
                   <div>
                     <h3 className="font-bold mb-2">Select Genres</h3>
-                    <div className="grid grid-cols-1 gap-2">
+                    <div className="grid grid-cols-1 gap-2 ml-2">
                       {allGenres.map((genre) => (
                         <div
                           key={genre.key}
