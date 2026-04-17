@@ -61,8 +61,10 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
         style={{
           width: "50vw",
           fontWeight: "bold",
-          paddingLeft: "0px",
-          paddingRight: "0px",
+          paddingLeft: "10px",
+          paddingRight: "7px",
+          paddingBottom: "7px",
+          paddingTop: "7px",
           borderRadius: "16px",
           border: "solid 1px gray",
         }}
@@ -74,14 +76,13 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
           },
           header: {
             className:
-              "bg-white dark:!bg-black text-black dark:!text-white pb-3",
+              "bg-white dark:!bg-black tracking-wide text-black dark:!text-white pb-3",
           },
           content: {
             className: "bg-white dark:!bg-black text-black dark:!text-white",
           },
           closeButton: {
-            className:
-              "scale-150 transition-all hover:bg-gray-200 dark:!hover:bg-zinc-700",
+            className: "scale-100 transition-all hover:text dark:bg-black! ",
           },
           closeButtonIcon: {
             className: "stroke-black dark:!stroke-white stroke-2",
@@ -91,30 +92,23 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
         {movie ? (
           <div className="bg-white dark:!bg-black top-0 transition-colors duration-300">
             <div className="bg-white dark:!bg-black sticky">
-              <div className="movie-details bg-white dark:!bg-black text-black dark:!text-white p-4 items-center transition-colors duration-300">
-                <div
-                  className="main-details"
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyItems: "end",
-                  }}
-                >
-                  <div className="image">
+              <div className="movie-details bg-white dark:!bg-black text-black dark:!text-white p-4 items-center gap-10 transition-colors duration-300">
+                <div className="flex flex-row justify-items-start gap-5">
+                  <div className="m-3">
                     {posterUrl && (
                       <img
                         src={posterUrl}
                         alt="Poster"
                         style={{
                           width: "100%",
-                          maxHeight: "250px",
+                          maxHeight: "300px",
                           objectFit: "contain",
                         }}
                       />
                     )}
                   </div>
-                  <div className="text-black dark:!text-black">
-                    <strong className="font-black dark:!font-white">
+                  <div className="text-black dark:!text-black text-md font-normal">
+                    <strong className="font-black dark:!font-white tracking-wide">
                       {movie.movie.title}
                     </strong>
                     <p>{movie.movie.year}</p>
@@ -129,7 +123,7 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
                   </div>
                 </div>
 
-                <p className="font-black dark:!font-black font-medium ml-2">
+                <p className="font-black dark:!font-black font-medium ml-2 mt-5">
                   <strong>Overview : </strong>
                   {movie.movie.overview || "No overview available"}
                 </p>
@@ -157,7 +151,7 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
                         style={{
                           position: "absolute",
                           top: 0,
-                          left: "30px",
+                          left: "60px",
                           width: "90%",
                           height: "100%",
                           borderRadius: "10px",
@@ -176,7 +170,7 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
                         }}
                       />
                     ) : (
-                      <div className="no-video">No trailer available</div>
+                      <div className="">No trailer available</div>
                     )}
                   </div>
 
@@ -184,7 +178,7 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
                     style={{
                       display: "flex",
                       flexDirection: "row",
-                      gap: "10px",
+                      gap: "12px",
                       alignItems: "center",
                       marginLeft: "200px",
                       marginTop: "0px",
@@ -193,7 +187,7 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
                     {movie.movie.genres?.map((genre, index) => (
                       <span
                         key={index}
-                        className="genre-chip bg-gray-200 dark:!bg-zinc-800/80 text-black dark:!text-white px-3 py-1 text-base rounded-full transition-colors duration-300"
+                        className="genre-chip bg-gray-200 dark:!bg-zinc-800/80 text-black dark:!text-white px-4 py-1 text-lg rounded-full transition-colors duration-300"
                       >
                         {genre}
                       </span>
@@ -201,7 +195,7 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
                   </div>
                 </div>
 
-                <div className="font-black dark:!font-white">
+                <div className="font-black dark:!font-white font-normal">
                   <div>
                     Country : {movie.movie.country?.toUpperCase() || "N/A"}
                   </div>
@@ -215,7 +209,7 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
                       onClick={handleButtonClick}
                       disabled={!RedirectButton}
                       unstyled
-                      className={`max-w-[1000px] px-5 py-2 rounded-xl font-bold tracking-wide transition-all ${
+                      className={`max-w-[1000px] px-5 py-2 rounded-xl text-2xl font-bold tracking-wide transition-all ${
                         RedirectButton
                           ? "bg-yellow-500 hover:bg-yellow-600 text-white hover:scale-101 shadow-lg shadow-yellow-500/30"
                           : "bg-gray-200 text-gray-400 dark:!bg-zinc-300 dark:!text-zinc-900 cursor-not-allowed"

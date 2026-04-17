@@ -354,8 +354,8 @@ function App() {
                   {selectedFilter?.code === "R" && (
                     <div>
                       <h3 className="font-bold">Rating Filter</h3>
-                      <div>
-                        <span className="text-primary font-semibold">
+                      <div className="no-scrollbar">
+                        <span className="text-primary font-semibold text-sm">
                           Minimum rating: {ratingThreshold}
                         </span>
                         <Slider
@@ -364,12 +364,17 @@ function App() {
                           pt={{
                             handle: {
                               className:
-                                "bg-yellow-500 border-yellow-600 w-4 h-4",
+                                "bg-yellow-500 border-2 border-yellow-600 w-3 h-3 -mt-[4px] rounded-full cursor-pointer hover:bg-yellow-600 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400",
                             },
-                            range: { className: "bg-yellow-400" },
-                            root: { className: "min-w-3xs mt-5 h-[10px]" },
+                            range: {
+                              className:
+                                "bg-yellow-400 h-full absolute rounded-full",
+                            },
+                            root: {
+                              className:
+                                "min-w-[10px] mt-5 bg-zinc-200 dark:bg-zinc-800 rounded-full h-2 relative",
+                            },
                           }}
-                          style={{ height: "10px" }}
                           min={0}
                           max={10}
                           step={1}

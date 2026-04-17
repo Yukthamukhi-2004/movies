@@ -86,11 +86,11 @@ const MovieCard = ({
           <div
             className={
               isListView
-                ? "flex flex-col justify-items-start py-4 gap-6"
+                ? "flex flex-col justify-items-start py-4 gap-6 mt-2"
                 : " flex flex-col text-center items-center gap-1.5 my-8 "
             }
           >
-            <span className="text-sm text-gray-700 dark:text-gray-300! ">
+            <span className="text-md text-gray-700 dark:text-gray-300! ">
               Released on: {formattedReleaseDate}
             </span>
 
@@ -104,7 +104,7 @@ const MovieCard = ({
               </strong>
             </div>
 
-            <div className="text-sm text-gray-500 dark:text-white! flex items-center gap-4">
+            <div className="text-lg text-gray-500 dark:text-white! flex items-center gap-4">
               <span>{item.movie.year || "N/A"}</span>
               <span>
                 | ⭐ {item.movie.rating ? item.movie.rating.toFixed(1) : "N/A"}
@@ -116,13 +116,13 @@ const MovieCard = ({
 
             <div className="flex-grow:1">
               {isListView && (
-                <p className=" text-gray-600 dark:text-zinc-300! text-sm line-clamp-4 leading-relaxed">
+                <p className=" text-gray-600 dark:text-zinc-300! text-md line-clamp-4 leading-relaxed">
                   {overview}
                 </p>
               )}
             </div>
 
-            <div className={`mt-4 flex ${isListView ? "gap-350" : " gap-34"}`}>
+            <div className={`mt-4 flex ${isListView ? "gap-380" : " gap-55"}`}>
               <Button
                 icon="pi pi-info-circle"
                 onClick={() => handleShowInfo(item)}
