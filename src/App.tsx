@@ -231,8 +231,8 @@ function App() {
         </div>
       </header>
 
-      <main className="flex min-h-0 flex-1 overflow-hidden">
-        <div className="w-full min-h-0 flex-1 overflow-y-auto">
+      <main className="flex h-screen flex-1 overflow-hidden bg-white dark:bg-zinc-950">
+        <div className="min-h-0 flex-1 h-full overflow-y-auto  no-scrollbar transition-all duration-300 ease-in-out">
           <Routes>
             <Route
               path="/"
@@ -264,112 +264,124 @@ function App() {
         </div>
 
         {/* --- FIXED SIDEBAR SECTION --- */}
-        {openFilters && (
-          <div className="sidebar-content h-full w-80 bg-white dark:bg-black! border-l border-zinc-200 dark:border-zinc-800! flex flex-col transition-all">
-            <div className="flex justify-between items-center p-4 border-b border-zinc-100 dark:border-zinc-900!">
-              <h2 className="font-bold">Filters</h2>
-              <Button
-                icon="pi pi-times"
-                unstyled
-                pt={{
-                  root: {
-                    className:
-                      "p-button-rounded p-button-text p-button-plain bg-white! dark:bg-black!",
-                  },
-                  icon: {
-                    className: "text-black! dark:text-white!",
-                  },
-                }}
-                onClick={() => setOpenFilters(false)}
-              />
-            </div>
+        <div
+          className={`
+      h-full 
+      bg-white dark:bg-black 
+      border-l border-zinc-200 dark:border-zinc-800
+      transition-all 
+      duration-500 
+      ease-in-out
+      ${openFilters ? "w-80 opacity-100" : "w-0 opacity-0 overflow-hidden border-none"}
+    `}
+        >
+          {openFilters && (
+            <div className="sidebar-content h-full w-80 shrink-0 bg-white dark:bg-black! border-l border-zinc-200 dark:border-zinc-800! flex flex-col transition-all">
+              <div className="flex justify-between items-center p-4 border-b border-zinc-100 dark:border-zinc-900!">
+                <h2 className="font-bold">Filters</h2>
+                <Button
+                  icon="pi pi-times"
+                  unstyled
+                  pt={{
+                    root: {
+                      className:
+                        "p-button-rounded p-button-text p-button-plain bg-white! dark:bg-black!",
+                    },
+                    icon: {
+                      className: "text-black! dark:text-white!",
+                    },
+                  }}
+                  onClick={() => setOpenFilters(false)}
+                />
+              </div>
 
-            <div className="flex-grow:1 overflow-y-auto p-4">
-              <ListBox
-                value={selectedFilter}
-                onChange={(e) => setSelectedFilter(e.value)}
-                options={filters}
-                optionLabel="name"
-                className="w-full "
-                style={{ maxHeight: "250px" }}
-              />
+              <div className="flex-grow:1 overflow-y-auto p-4">
+                <ListBox
+                  value={selectedFilter}
+                  onChange={(e) => setSelectedFilter(e.value)}
+                  options={filters}
+                  optionLabel="name"
+                  className="w-full "
+                  style={{ maxHeight: "250px" }}
+                />
 
-              <div className="filter-details ">
-                {/* YEAR FILTER (Code Y) */}
-                {selectedFilter?.code === "Y" && (
-                  <div className="animate-fade-in">
-                    <h3 className="block font-bold mb-3 text-sm text-zinc-500 pl-8 uppercase tracking-wider">
-                      Select Year
-                    </h3>
-                    <YearsList
-                      movies={movies}
-                      onYearChange={(year) => setSelectedYear(year)}
-                      selectedYear={selectedYear}
-                    />
-                  </div>
-                )}
-
-                {/* GENRES FILTER (Code G) */}
-                {selectedFilter?.code === "G" && (
-                  <div>
-                    <h3 className="font-bold mb-2">Select Genres</h3>
-                    <div className="grid grid-cols-1 gap-2 ml-2">
-                      {allGenres.map((genre) => (
-                        <div
-                          key={genre.key}
-                          className="flex items-center gap-2"
-                        >
-                          <Checkbox
-                            inputId={genre.key}
-                            value={genre}
-                            onChange={handleGenreChange}
-                            checked={selectedGenres.some(
-                              (item) => item.key === genre.key,
-                            )}
-                          />
-                          <label
-                            htmlFor={genre.key}
-                            className="text-sm capitalize"
-                          >
-                            {genre.name}
-                          </label>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* RATING FILTER (Code R) */}
-                {selectedFilter?.code === "R" && (
-                  <div>
-                    <h3 className="font-bold">Rating Filter</h3>
-                    <div>
-                      <span className="text-primary font-semibold">
-                        Minimum rating: {ratingThreshold}
-                      </span>
-                      <Slider
-                        value={ratingThreshold}
-                        onChange={handleRatingChange}
-                        pt={{
-                          handle: {
-                            className:
-                              "bg-yellow-500 border-yellow-600 w-4 h-4",
-                          },
-                          range: { className: "bg-yellow-400" },
-                          root: { className: "min-w-3xs mt-5 h-[10px]" },
-                        }}
-                        style={{ height: "10px" }}
-                        min={0}
-                        max={10}
-                        step={1}
+                <div className="filter-details ">
+                  {/* YEAR FILTER (Code Y) */}
+                  {selectedFilter?.code === "Y" && (
+                    <div className="animate-fade-in">
+                      <h3 className="block font-bold mb-3 text-md text-zinc-500 pl-8 uppercase tracking-wider">
+                        Select Year
+                      </h3>
+                      <YearsList
+                        movies={movies}
+                        onYearChange={(year) => setSelectedYear(year)}
+                        selectedYear={selectedYear}
                       />
                     </div>
-                  </div>
-                )}
+                  )}
+
+                  {/* GENRES FILTER (Code G) */}
+                  {selectedFilter?.code === "G" && (
+                    <div>
+                      <h3 className="font-bold mb-2">Select Genres</h3>
+                      <div className="grid grid-cols-1 gap-2 ml-2">
+                        {allGenres.map((genre) => (
+                          <div
+                            key={genre.key}
+                            className="flex items-center gap-2"
+                          >
+                            <Checkbox
+                              inputId={genre.key}
+                              value={genre}
+                              onChange={handleGenreChange}
+                              checked={selectedGenres.some(
+                                (item) => item.key === genre.key,
+                              )}
+                            />
+                            <label
+                              htmlFor={genre.key}
+                              className="text-sm capitalize"
+                            >
+                              {genre.name}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* RATING FILTER (Code R) */}
+                  {selectedFilter?.code === "R" && (
+                    <div>
+                      <h3 className="font-bold">Rating Filter</h3>
+                      <div>
+                        <span className="text-primary font-semibold">
+                          Minimum rating: {ratingThreshold}
+                        </span>
+                        <Slider
+                          value={ratingThreshold}
+                          onChange={handleRatingChange}
+                          pt={{
+                            handle: {
+                              className:
+                                "bg-yellow-500 border-yellow-600 w-4 h-4",
+                            },
+                            range: { className: "bg-yellow-400" },
+                            root: { className: "min-w-3xs mt-5 h-[10px]" },
+                          }}
+                          style={{ height: "10px" }}
+                          min={0}
+                          max={10}
+                          step={1}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </main>
     </div>
   );

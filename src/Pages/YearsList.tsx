@@ -44,7 +44,7 @@ function YearsList({ movies, onYearChange, selectedYear }: ScrollerProps) {
             item: (props) => ({
               className: `p-3 text-center transition-all ${
                 props?.context?.selected
-                  ? "bg-white! text-yellow-500! dark:bg-black! dark:text-yellow-500!"
+                  ? "bg-white! text-yellow-500! dark:bg-black! dark:text-yellow-500! text-lg"
                   : "text-black dark:text-white hover:text-black-xl dark:hover:bg-zinc-800"
               }`,
             }),
