@@ -122,7 +122,9 @@ const MovieCard = ({
               )}
             </div>
 
-            <div className={`mt-4 flex ${isListView ? "gap-380" : " gap-55"}`}>
+            <div
+              className={`mt-4 flex ${isListView ? "gap-380!" : " gap-55!"}`}
+            >
               <Button
                 icon="pi pi-info-circle"
                 onClick={() => handleShowInfo(item)}

@@ -366,7 +366,7 @@ function App() {
                       <h3 className="font-bold">Rating Filter</h3>
                       <div className="no-scrollbar!">
                         <span className="text-primary font-semibold text-sm">
-                        Minimum rating: {ratingThreshold}
+                          Minimum rating: {ratingThreshold}
                         </span>
                         <Slider
                           value={ratingThreshold}

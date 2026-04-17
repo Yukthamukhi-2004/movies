@@ -87,7 +87,7 @@ function TrendingMovies({
       {!isLoading && !error && displayedMovies.length === 0 && (
         <p className="text-black dark:text-white!">
           {movies.length === 0
-            ? "Movies are loading from the API, but nothing valid was available to render yet."
+            ? "No movies match the current filters."
             : "No movies match the current filters."}
         </p>
       )}

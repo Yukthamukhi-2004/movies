@@ -107,7 +107,7 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
                       />
                     )}
                   </div>
-                  <div className="text-black dark:!text-black text-md font-normal">
+                  <div className="text-black dark:!text-white text-md font-normal">
                     <strong className="font-black dark:!font-white tracking-wide">
                       {movie.movie.title}
                     </strong>
