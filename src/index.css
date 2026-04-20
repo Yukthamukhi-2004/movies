@@ -25,3 +25,8 @@ body {
 .app-container {
   @apply w-full px-4 md:px-20;
 }
+.p-listbox:not(.p-disabled)
+  .p-listbox-item:not(.p-highlight):not(.p-disabled).p-focus {
+  color: #4b5563;
+  background: black !important;
+}

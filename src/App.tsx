@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import type { TraktMovies } from "./types/trakt";
 import TrendingMovies from "./Pages/TrendingMovies";
@@ -13,6 +13,7 @@ import { Checkbox } from "primereact/checkbox";
 import { ListBox } from "primereact/listbox";
 import { Slider } from "primereact/slider";
 import { debounce } from "lodash";
+import { Chip } from "primereact/chip";
 
 interface FilterOption {
   name: string;
@@ -52,6 +53,7 @@ function App() {
     null,
   );
   const [ratingThreshold, setRatingThreshold] = useState<number>(0);
+  const [debouncedRating, setDebouncedRating] = useState<number>(0);
 
   const filters: FilterOption[] = [
     { name: "Year", code: "Y" },
@@ -73,10 +75,16 @@ function App() {
     }));
   }, [movies]);
 
-  const handleRatingChange = useCallback(
-    debounce((e: any) => setRatingThreshold(e.value), 100),
+  const updateDebouncedRating = useMemo(
+    () => debounce((val: number) => setDebouncedRating(val), 300),
     [],
   );
+
+  const handleRatingChange =(e: any) =>{
+    const newValue=e.value;
+    setRatingThreshold(newValue);
+    updateDebouncedRating(newValue);
+
 
   const handleGenreChange = (e: any) => {
     let _selectedGenres = [...selectedGenres];
@@ -133,9 +141,17 @@ function App() {
 
         <div className="flex gap-6 items-center">
           <ThemeToggle />
-
           <Button
             label="Home"
+            unstyled
+            pt={{
+              icon: {
+                className: " text:black dark:text-white!",
+              },
+              root: {
+                className: "flex items-center gap-2 bg-white dark:bg-black!",
+              },
+            }}
             icon={
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -153,15 +169,6 @@ function App() {
               </svg>
             }
             onClick={() => navigate("/")}
-            unstyled
-            pt={{
-              icons: {
-                classname: " text:black dark:text-white!",
-              },
-              root: {
-                className: "flex items-center gap-2 bg-white dark:bg-black!",
-              },
-            }}
           />
 
           <Button
@@ -231,8 +238,13 @@ function App() {
         </div>
       </header>
 
-      <main className="flex h-screen flex-1 overflow-hidden bg-white dark:bg-zinc-950">
-        <div className="min-h-0 flex-1 h-full overflow-y-auto  no-scrollbar transition-all duration-300 ease-in-out">
+      <main className="flex h-screen flex-1  overflow-hidden bg-white dark:bg-zinc-950">
+        <div className="min-h-0 flex-1 h-full overflow-y-auto  no-scrollbar! transition-all duration-300 ease-in-out">
+          <div className="h-30px">
+            {SelectedFilter && (
+              <Chip label="Microsoft" icon="pi pi-microsoft" removable />
+            )}
+          </div>
           <Routes>
             <Route
               path="/"
@@ -264,52 +276,53 @@ function App() {
         </div>
 
         {/* --- FIXED SIDEBAR SECTION --- */}
-        <div
-          className={`
-      h-full 
-      bg-white dark:bg-black 
-      border-l border-zinc-200 dark:border-zinc-800
-      transition-all 
-      duration-500 
-      ease-in-out
-      ${openFilters ? "w-80 opacity-100" : "w-0 opacity-0 overflow-hidden border-none"}
-    `}
-        >
-          {openFilters && (
-            <div className="sidebar-content h-full w-80 shrink-0 bg-white dark:bg-black! border-l border-zinc-200 dark:border-zinc-800! flex flex-col transition-all">
-              <div className="flex justify-between items-center p-4 border-b border-zinc-100 dark:border-zinc-900!">
-                <h2 className="font-bold">Filters</h2>
-                <Button
-                  icon="pi pi-times"
-                  unstyled
-                  pt={{
-                    root: {
-                      className:
-                        "p-button-rounded p-button-text p-button-plain bg-white! dark:bg-black!",
-                    },
-                    icon: {
-                      className: "text-black! dark:text-white!",
-                    },
-                  }}
-                  onClick={() => setOpenFilters(false)}
-                />
-              </div>
 
-              <div className="flex-grow:1 overflow-y-auto p-4">
-                <ListBox
-                  value={selectedFilter}
-                  onChange={(e) => setSelectedFilter(e.value)}
-                  options={filters}
-                  optionLabel="name"
-                  className="w-full "
-                  style={{ maxHeight: "250px" }}
-                />
+        {openFilters && (
+          <div className="sidebar-content h-full w-80 shrink-0 no-scrollbar! bg-white dark:bg-black! border-l border-zinc-200 dark:border-zinc-800! flex flex-col transition-all">
+            <div className="flex justify-between items-center p-4 border-b border-zinc-100 dark:border-zinc-900!">
+              <h2 className="font-bold">Filters</h2>
+              <Button
+                icon="pi pi-times"
+                unstyled
+                pt={{
+                  root: {
+                    className:
+                      "p-button-rounded p-button-text p-button-plain bg-white! dark:bg-black!",
+                  },
+                  icon: {
+                    className: "text-black! dark:text-white!",
+                  },
+                }}
+                onClick={() => setOpenFilters(false)}
+              />
+            </div>
 
-                <div className="filter-details ">
-                  {/* YEAR FILTER (Code Y) */}
+            <div className="filter-container flex flex-col items-center gap-8 p-4">
+              <ListBox
+                value={selectedFilter}
+                onChange={(e) => setSelectedFilter(e.value)}
+                options={filters}
+                optionLabel="name"
+                className="w-full "
+                style={{ maxHeight: "250px" }}
+              />
+              <div className="filter-container w-60 h-auto p-4">
+                <div className="flex justify-end w-full pr-4">
+                  <Button
+                    label="Clear All"
+                    unstyled
+                    pt={{
+                      root: {
+                        className: "text-yellow-500 cursor-pointer hover",
+                      },
+                    }}
+                  />
+                </div>
+
+                <div className=" bg-zinc-900 rounded-md overflow-y-auto max-h-[50vh] mt-2">
                   {selectedFilter?.code === "Y" && (
-                    <div className="animate-fade-in">
-                      <h3 className="block font-bold mb-3 text-md text-zinc-500 pl-8 uppercase tracking-wider">
+                    <div className="pl-6">
+                      <h3 className="block font-bold mb-3 text-xl text-zinc-400 pl-8 uppercase tracking-wider">
                         Select Year
                       </h3>
                       <YearsList
@@ -320,47 +333,43 @@ function App() {
                     </div>
                   )}
 
-                  {/* GENRES FILTER (Code G) */}
                   {selectedFilter?.code === "G" && (
                     <div>
                       <h3 className="font-bold mb-2">Select Genres</h3>
-                      <div className="grid grid-cols-1 gap-2 ml-2">
-                        {allGenres.map((genre) => (
-                          <div
-                            key={genre.key}
-                            className="flex items-center gap-2"
+                      {allGenres.map((genre) => (
+                        <div
+                          key={genre.key}
+                          className="flex items-center gap-2"
+                        >
+                          <Checkbox
+                            inputId={genre.key}
+                            value={genre}
+                            onChange={handleGenreChange}
+                            pt={{
+                              box: ({ context }) => ({
+                                className: context.checked
+                                  ? "bg-yellow-500! border-yellow-600!"
+                                  : "bg-white dark:bg-zinc-900 border-zinc-300",
+                              }),
+                              icon: {
+                                className: "text-white text-xs",
+                              },
+                            }}
+                            checked={selectedGenres.some(
+                              (item) => item.key === genre.key,
+                            )}
+                          />
+                          <label
+                            htmlFor={genre.key}
+                            className="text-sm capitalize"
                           >
-                            <Checkbox
-                              inputId={genre.key}
-                              value={genre}
-                              onChange={handleGenreChange}
-                              pt={{
-                                box: ({ context }) => ({
-                                  className: context.checked
-                                    ? "bg-yellow-500! border-yellow-600!" // Yellow when checked
-                                    : "bg-white dark:bg-zinc-900 border-zinc-300", // Default state
-                                }),
-                                icon: {
-                                  className: "text-white text-xs", // The actual tick mark color
-                                },
-                              }}
-                              checked={selectedGenres.some(
-                                (item) => item.key === genre.key,
-                              )}
-                            />
-                            <label
-                              htmlFor={genre.key}
-                              className="text-sm capitalize"
-                            >
-                              {genre.name}
-                            </label>
-                          </div>
-                        ))}
-                      </div>
+                            {genre.name}
+                          </label>
+                        </div>
+                      ))}
                     </div>
                   )}
 
-                  {/* RATING FILTER (Code R) */}
                   {selectedFilter?.code === "R" && (
                     <div>
                       <h3 className="font-bold">Rating Filter</h3>
@@ -394,9 +403,20 @@ function App() {
                   )}
                 </div>
               </div>
+              <div className="mt-auto pt-6">
+                <Button
+                  label="Done"
+                  unstyled
+                  pt={{
+                    root: {
+                      className: "text-yellow-500 cursor-pointer hover",
+                    },
+                  }}
+                />
+              </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </main>
     </div>
   );
