@@ -85,7 +85,7 @@ function App() {
     setRatingThreshold(newValue);
     updateDebouncedRating(newValue);
 
-
+  }
   const handleGenreChange = (e: any) => {
     let _selectedGenres = [...selectedGenres];
     if (e.checked) {
@@ -241,7 +241,7 @@ function App() {
       <main className="flex h-screen flex-1  overflow-hidden bg-white dark:bg-zinc-950">
         <div className="min-h-0 flex-1 h-full overflow-y-auto  no-scrollbar! transition-all duration-300 ease-in-out">
           <div className="h-30px">
-            {SelectedFilter && (
+            {selectedFilter && (
               <Chip label="Microsoft" icon="pi pi-microsoft" removable />
             )}
           </div>

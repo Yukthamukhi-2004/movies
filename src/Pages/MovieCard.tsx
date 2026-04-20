@@ -47,22 +47,9 @@ const MovieCard = ({
           showDelay={0}
           hideDelay={100}
         />
-        <Card
-          unstyled
-          className={`overflow-hidden hover:scale-[1.01] transition-transform border shadow-md ${
-            isListView ? "w-70% gap-4 h-[120px] " : "flex flex-col h-full gap-2"
-          } bg-white dark:bg-zinc-900 border-gray-300 dark:border-zinc-700 rounded-xl`}
-          pt={{
-            root: {
-              className: `flex h-full ${isListView ? "flex-row" : "flex-col"}`,
-            },
-            body: {
-              className: "p-4 flex flex-col flex-grow min-w-0 overflow-hidden",
-            }, // This styles the actual container
-            content: { className: "p-0" }, // Removes default padding that might be ruining your layout
-          }}
-          header={
-            <div
+        <div className="">
+          
+        <div
               className={
                 isListView
                   ? "w-[200px] min-w-[100px] h-90% m-2 shrink-0 overflow-hidden rounded-l-xl"
@@ -81,8 +68,6 @@ const MovieCard = ({
                 }}
               />
             </div>
-          }
-        >
           <div
             className={
               isListView
@@ -156,7 +141,7 @@ const MovieCard = ({
               />
             </div>
           </div>
-        </Card>
+        </div>
       </li>
     </div>
   );

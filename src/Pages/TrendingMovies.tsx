@@ -53,7 +53,7 @@ function TrendingMovies({
             },
           },
         );
-
+console.log("Fetch Response:", res);
         if (!res.ok) {
           if (res.status === 429) {
             console.error("Rate limited! Wait a minute before refreshing.");
@@ -77,7 +77,14 @@ function TrendingMovies({
     }
 
     fetchMovies();
-  }, [setMovies]);
+  }, []);
+
+
+
+
+
+
+
   return (
     <div className="min-h-full bg-white p-2 md:p-4 dark:bg-black! gap-5">
       {isLoading && (
