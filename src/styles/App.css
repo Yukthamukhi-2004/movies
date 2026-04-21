@@ -64,3 +64,9 @@ main {
 .pi .pi-list {
   font: black;
 }
+
+@layer overrides {
+  .p-chip {
+    background-color: transparent; /* or your desired color */
+  }
+}

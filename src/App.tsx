@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import type { TraktMovies } from "./types/trakt";
 import TrendingMovies from "./Pages/TrendingMovies";
@@ -248,10 +248,8 @@ function App() {
         </div>
       )}
 
-      <main className="flex h-screen flex-1  overflow-hidden bg-white dark:bg-zinc-950">
-        <div className="min-h-0 flex-1 h-full overflow-y-auto  no-scrollbar! transition-all duration-300 ease-in-out">
-          <div className="h-30px">
-           
+      <main className="flex flex-1 overflow-hidden bg-white dark:bg-zinc-950">
+        <div className="flex-1 min-h-0 overflow-y-auto no-scrollbar transition-all duration-300 ease-in-out">
           <Routes>
             <Route
               path="/"
@@ -276,36 +274,30 @@ function App() {
                     )
                   }
                   onClear={() => setWatchlist([])}
+                  isListView={isListView}
                 />
               }
             />
           </Routes>
         </div>
 
-        {/* --- FIXED SIDEBAR SECTION --- */}
-
-            <Filter
-              movies={finalFilteredMovies}
-              allMovies={movies}
-                        selectedYear={selectedYear}
-              setSelectedYear={setSelectedYear}
-              clearAllFilters={clearAllFilters}
-              selectedGenres={selectedGenres}
-              setSelectedGenres={setSelectedGenres}
-              openFilters={openFilters}
-              setOpenFilters={setOpenFilters}
-              selectedFilter={selectedFilter}
-              setSelectedFilter={setSelectedFilter}
-              ratingThreshold={ratingThreshold}
-              setRatingThreshold={setRatingThreshold}
-              debouncedRating={debouncedRating}
-              setDebouncedRating={setDebouncedRating}
-              ratingThreshold={ratingThreshold}
-                />
-              </div>
-            </div>
-          </div>
-        )}
+        <Filter
+          movies={finalFilteredMovies}
+          allMovies={movies}
+          selectedYear={selectedYear}
+          setSelectedYear={setSelectedYear}
+          clearAllFilters={clearAllFilters}
+          selectedGenres={selectedGenres}
+          setSelectedGenres={setSelectedGenres}
+          openFilters={openFilters}
+          setOpenFilters={setOpenFilters}
+          selectedFilter={selectedFilter}
+          setSelectedFilter={setSelectedFilter}
+          ratingThreshold={ratingThreshold}
+          setRatingThreshold={setRatingThreshold}
+          debouncedRating={debouncedRating}
+          setDebouncedRating={setDebouncedRating}
+        />
       </main>
     </div>
   );
