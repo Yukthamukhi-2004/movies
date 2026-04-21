@@ -3,41 +3,14 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import type { TraktMovies } from "./types/trakt";
 import TrendingMovies from "./Pages/TrendingMovies";
 import WatchList from "./Pages/WatchList";
-import YearsList from "./Pages/YearsList";
 import "primeicons/primeicons.css";
 import "./styles/App.css";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import { Button } from "primereact/button";
 import ThemeToggle from "./components/ThemeToggle";
-import { Checkbox } from "primereact/checkbox";
-import { ListBox } from "primereact/listbox";
-import { Slider } from "primereact/slider";
-import { debounce } from "lodash";
+import Filter from "./Pages/Filter";
 import { Chip } from "primereact/chip";
-
-interface FilterOption {
-  name: string;
-  code: string;
-}
-
-declare global {
-  interface EventTarget {
-    _addEventListener: typeof EventTarget.prototype.addEventListener;
-  }
-}
-
-EventTarget.prototype._addEventListener =
-  EventTarget.prototype.addEventListener;
-EventTarget.prototype.addEventListener = function (type, fn, options) {
-  if (type === "scroll" || type === "touchstart" || type === "wheel") {
-    this._addEventListener(type, fn, {
-      passive: true,
-      ...(typeof options === "object" ? options : {}),
-    });
-  } else {
-    this._addEventListener(type, fn, options);
-  }
-};
+import type { FilterOption } from "./components/filters";
 
 function App() {
   const navigate = useNavigate();
@@ -54,50 +27,6 @@ function App() {
   );
   const [ratingThreshold, setRatingThreshold] = useState<number>(0);
   const [debouncedRating, setDebouncedRating] = useState<number>(0);
-
-  const filters: FilterOption[] = [
-    { name: "Year", code: "Y" },
-    { name: "Genres", code: "G" },
-    { name: "Rating", code: "R" },
-  ];
-  console.log("Current Filters Array:", filters);
-
-  const allGenres = useMemo(() => {
-    const genresSet = new Set(
-      movies
-        .filter((m) => (m.movie && m.movie?.genres) || [])
-        .flatMap((m) => m.movie.genres),
-    );
-
-    return Array.from(genresSet).map((genre) => ({
-      name: genre,
-      key: genre,
-    }));
-  }, [movies]);
-
-  const updateDebouncedRating = useMemo(
-    () => debounce((val: number) => setDebouncedRating(val), 300),
-    [],
-  );
-
-  const handleRatingChange =(e: any) =>{
-    const newValue=e.value;
-    setRatingThreshold(newValue);
-    updateDebouncedRating(newValue);
-
-
-  const handleGenreChange = (e: any) => {
-    let _selectedGenres = [...selectedGenres];
-    if (e.checked) {
-      _selectedGenres.push(e.value);
-    } else
-      _selectedGenres = _selectedGenres.filter(
-        (category) => category.key !== e.value.key,
-      );
-    setSelectedGenres(_selectedGenres);
-  };
-
-  console.log(selectedFilter?.code);
 
   const finalFilteredMovies = useMemo(() => {
     return movies.filter((m) => {
@@ -122,7 +51,25 @@ function App() {
       setWatchlist([...watchlist, movie]);
     }
   };
-  /*  console.log("Movies in App:", movies); */
+
+  const hasActiveFilters =
+    selectedYear !== null || selectedGenres.length > 0 || ratingThreshold > 0;
+
+  const clearAllFilters = () => {
+    setSelectedYear(null);
+    setSelectedGenres([]);
+    setRatingThreshold(0);
+    setDebouncedRating(0);
+  };
+
+  const goHome = () => {
+    setOpenFilters(false);
+    navigate("/");
+    setSelectedYear(null);
+    setSelectedGenres([]);
+    setRatingThreshold(0);
+    setDebouncedRating(0);
+  };
 
   return (
     <div className="app-container flex h-screen flex-col px-2">
@@ -130,7 +77,7 @@ function App() {
         <div className="flex flex-col gap-2 items-center">
           <h1
             className="text-4xl font-extrabold text-black dark:text-white! cursor-pointer hover:text-gray-600"
-            onClick={() => navigate("/")}
+            onClick={goHome}
           >
             My Movie App
           </h1>
@@ -168,7 +115,7 @@ function App() {
                 />
               </svg>
             }
-            onClick={() => navigate("/")}
+            onClick={goHome}
           />
 
           <Button
@@ -237,14 +184,74 @@ function App() {
           />
         </div>
       </header>
+      {hasActiveFilters && (
+        <div className="flex flex-wrap gap-3 px-8 py-10 h-8 m-20  border-zinc-300 dark:border-zinc-300 bg-white dark:bg-black shrink-0 border-rounded-3xl">
+          {selectedYear !== null && (
+            <Chip
+              label={`Year: ${selectedYear}`}
+              removable
+              unstyled
+              onRemove={() => setSelectedYear(null)}
+              pt={{
+                root: {
+                  className:
+                    "bg-white dark:bg-black gap-2 text-zinc-900 dark:text-white! border-zinc-300 dark:border-zinc-500 ",
+                },
+                removeIcon: {
+                  className: "text-zinc-900 dark:text-zinc-200 border-none",
+                },
+              }}
+            />
+          )}
+          {selectedGenres.map((genre) => (
+            <Chip
+              key={genre.key}
+              label={`Genre: ${genre.name}`}
+              unstyled
+              removable
+              onRemove={() =>
+                setSelectedGenres((prev) =>
+                  prev.filter((g) => g.key !== genre.key),
+                )
+              }
+              pt={{
+                root: {
+                  className:
+                    "bg-white dark:bg-black gap-2 text-zinc-900 dark:text-white! border-zinc-300 dark:border-zinc-500 border-rounded-3xl",
+                },
+                removeIcon: {
+                  className: "text-zinc-900 dark:text-zinc-200",
+                },
+              }}
+            />
+          ))}
+          {ratingThreshold > 0 && (
+            <Chip
+              label={`Rating ≥ ${ratingThreshold}`}
+              removable
+              unstyled
+              onRemove={() => {
+                setRatingThreshold(0);
+                setDebouncedRating(0);
+              }}
+              pt={{
+                root: {
+                  className:
+                    "bg-white dark:bg-black gap-5 text-zinc-900 dark:text-white! border-zinc-300 dark:border-zinc-500  border-rounded-3xl",
+                },
+                removeIcon: {
+                  className: "text-zinc-900 dark:text-zinc-200 ",
+                },
+              }}
+            />
+          )}
+        </div>
+      )}
 
       <main className="flex h-screen flex-1  overflow-hidden bg-white dark:bg-zinc-950">
         <div className="min-h-0 flex-1 h-full overflow-y-auto  no-scrollbar! transition-all duration-300 ease-in-out">
           <div className="h-30px">
-            {SelectedFilter && (
-              <Chip label="Microsoft" icon="pi pi-microsoft" removable />
-            )}
-          </div>
+           
           <Routes>
             <Route
               path="/"
@@ -277,141 +284,23 @@ function App() {
 
         {/* --- FIXED SIDEBAR SECTION --- */}
 
-        {openFilters && (
-          <div className="sidebar-content h-full w-80 shrink-0 no-scrollbar! bg-white dark:bg-black! border-l border-zinc-200 dark:border-zinc-800! flex flex-col transition-all">
-            <div className="flex justify-between items-center p-4 border-b border-zinc-100 dark:border-zinc-900!">
-              <h2 className="font-bold">Filters</h2>
-              <Button
-                icon="pi pi-times"
-                unstyled
-                pt={{
-                  root: {
-                    className:
-                      "p-button-rounded p-button-text p-button-plain bg-white! dark:bg-black!",
-                  },
-                  icon: {
-                    className: "text-black! dark:text-white!",
-                  },
-                }}
-                onClick={() => setOpenFilters(false)}
-              />
-            </div>
-
-            <div className="filter-container flex flex-col items-center gap-8 p-4">
-              <ListBox
-                value={selectedFilter}
-                onChange={(e) => setSelectedFilter(e.value)}
-                options={filters}
-                optionLabel="name"
-                className="w-full "
-                style={{ maxHeight: "250px" }}
-              />
-              <div className="filter-container w-60 h-auto p-4">
-                <div className="flex justify-end w-full pr-4">
-                  <Button
-                    label="Clear All"
-                    unstyled
-                    pt={{
-                      root: {
-                        className: "text-yellow-500 cursor-pointer hover",
-                      },
-                    }}
-                  />
-                </div>
-
-                <div className=" bg-zinc-900 rounded-md overflow-y-auto max-h-[50vh] mt-2">
-                  {selectedFilter?.code === "Y" && (
-                    <div className="pl-6">
-                      <h3 className="block font-bold mb-3 text-xl text-zinc-400 pl-8 uppercase tracking-wider">
-                        Select Year
-                      </h3>
-                      <YearsList
-                        movies={movies}
-                        onYearChange={(year) => setSelectedYear(year)}
+            <Filter
+              movies={finalFilteredMovies}
+              allMovies={movies}
                         selectedYear={selectedYear}
-                      />
-                    </div>
-                  )}
-
-                  {selectedFilter?.code === "G" && (
-                    <div>
-                      <h3 className="font-bold mb-2">Select Genres</h3>
-                      {allGenres.map((genre) => (
-                        <div
-                          key={genre.key}
-                          className="flex items-center gap-2"
-                        >
-                          <Checkbox
-                            inputId={genre.key}
-                            value={genre}
-                            onChange={handleGenreChange}
-                            pt={{
-                              box: ({ context }) => ({
-                                className: context.checked
-                                  ? "bg-yellow-500! border-yellow-600!"
-                                  : "bg-white dark:bg-zinc-900 border-zinc-300",
-                              }),
-                              icon: {
-                                className: "text-white text-xs",
-                              },
-                            }}
-                            checked={selectedGenres.some(
-                              (item) => item.key === genre.key,
-                            )}
-                          />
-                          <label
-                            htmlFor={genre.key}
-                            className="text-sm capitalize"
-                          >
-                            {genre.name}
-                          </label>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {selectedFilter?.code === "R" && (
-                    <div>
-                      <h3 className="font-bold">Rating Filter</h3>
-                      <div className="no-scrollbar!">
-                        <span className="text-primary font-semibold text-sm">
-                          Minimum rating: {ratingThreshold}
-                        </span>
-                        <Slider
-                          value={ratingThreshold}
-                          onChange={handleRatingChange}
-                          pt={{
-                            handle: {
-                              className:
-                                "bg-yellow-500! border-2 border-yellow-600! w-3 h-3 -mt-[4px] rounded-full cursor-pointer hover:bg-yellow-600! transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400!",
-                            },
-                            range: {
-                              className:
-                                "bg-yellow-400! h-full absolute rounded-full",
-                            },
-                            root: {
-                              className:
-                                "min-w-[10px] mt-5 bg-zinc-200 dark:bg-zinc-800 rounded-full h-2 relative",
-                            },
-                          }}
-                          min={0}
-                          max={10}
-                          step={1}
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="mt-auto pt-6">
-                <Button
-                  label="Done"
-                  unstyled
-                  pt={{
-                    root: {
-                      className: "text-yellow-500 cursor-pointer hover",
-                    },
-                  }}
+              setSelectedYear={setSelectedYear}
+              clearAllFilters={clearAllFilters}
+              selectedGenres={selectedGenres}
+              setSelectedGenres={setSelectedGenres}
+              openFilters={openFilters}
+              setOpenFilters={setOpenFilters}
+              selectedFilter={selectedFilter}
+              setSelectedFilter={setSelectedFilter}
+              ratingThreshold={ratingThreshold}
+              setRatingThreshold={setRatingThreshold}
+              debouncedRating={debouncedRating}
+              setDebouncedRating={setDebouncedRating}
+              ratingThreshold={ratingThreshold}
                 />
               </div>
             </div>
