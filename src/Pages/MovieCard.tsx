@@ -1,7 +1,4 @@
 import type { TraktMovies } from "../types/trakt";
-import { Image } from "primereact/image";
-import { Card } from "primereact/card";
-import { Button } from "primereact/button";
 import { Tooltip } from "primereact/tooltip";
 import "../styles/MovieCard.css";
 
@@ -37,8 +34,7 @@ const MovieCard = ({
   const overview = item.movie.overview || item.movie.overview || "No overview";
 
   return (
-    <div>
-      <li className="list-none">
+    <div className="p-6 ">
         <Tooltip
           target=".movie-title-tooltip"
           mouseTrack
@@ -47,42 +43,19 @@ const MovieCard = ({
           showDelay={0}
           hideDelay={100}
         />
-        <Card
-          unstyled
-          className={` ${
-            isListView ? "w-70% gap-4 h-[120px] " : "flex flex-col  gap-2"
-          } bg-white dark:bg-zinc-900 border-gray-300 dark:border-zinc-700 rounded-xl`}
-          pt={{
-            root: {
-              className: `flex h-full ${isListView ? "flex-row" : "flex-col"}`,
-            },
-            body: {
-              className: "p-4 flex flex-col flex-grow min-w-0 overflow-hidden",
-            },
-            content: { className: "p-0" },
-          }}
-          header={
-            <div
-              className={
-                isListView
-                  ? "w-[200px] min-w-[100px] h-90% m-2 shrink-0 overflow-hidden rounded-l-xl"
-                  : "w-full aspect-2/3 overflow-hidden "
-              }
-            >
-              <Image
+        <div 
+             onClick={() => handleShowInfo(item)
+            }>
+<div 
+          className={`w-full rounded-xl flex   hover:scale-102 transition-transform cursor-pointer   justify-center items-center align-middle justify-items-center bg-gray-100  ${isListView ?   "flex-row gap-6":" flex-col h-[60vh]"} "} `}
+
+>           
+              <img
                 src={posterUrl}
                 alt={item.movie.title}
-                unstyled
-                pt={{
-                  root: { className: "block w-full h-full" },
-                  image: {
-                    className: "w-full h-full object-cover block rounded-xl",
-                  },
-                }}
+                className={`object-cover   ${isListView ?  "h-[50vh] " : "w-full"}`}            
               />
-            </div>
-          }
-        >
+              </div>
           <div
             className={
               isListView
@@ -123,41 +96,27 @@ const MovieCard = ({
             </div>
 
             <div className="flex flex-row justify-between items-center w-full !p-5">
-              <Button
-                icon="pi pi-info-circle"
+              <button
                 onClick={() => handleShowInfo(item)}
-                text
-                plain
-                unstyled
-                pt={{
-                  root: {
-                    className:
-                      "flex items-center justify-center p-2 rounded-lg border-2 border-transparent text-black dark:!text-white hover:border-white dark:!hover:border-black transition-all",
-                  },
-                  label: { className: "hidden" },
-                  icon: { className: "text-xl" },
-                }}
-              />
+                className="flex items-center justify-center p-2 rounded-lg border-2 border-transparent text-black dark:!text-white hover:border-white dark:!hover:border-black transition-all"
+              >
+                <span className="font-bold tracking-wide">View Details</span>
+              </button>
 
-              <Button
-                label={isAdded ? "Added to Watchlist" : "Add to Watchlist"}
-                icon={isAdded ? "pi pi-check" : "pi pi-plus"}
+              <button
                 onClick={handleInternalClick}
-                unstyled
-                pt={{
-                  root: {
-                    className:
-                      "flex items-center gap-2 px-3 py-2 text-black dark:!text-white px-2 py-1 rounded-lg border-2 border-transparent hover:border-white dark:!hover:border-black transition-all",
-                  },
-                  label: { className: "font-bold tracking-wide" },
-                }}
-              />
+                className="flex items-center justify-center p-2 rounded-lg border-2 border-transparent text-black dark:!text-white hover:border-white dark:!hover:border-black transition-all"
+              >
+                <span className="font-bold tracking-wide">
+                  {isAdded ? "Added to Watchlist" : "Add to Watchlist"}
+                </span>
+              </button>
             </div>
           </div>
-        </Card>
-      </li>
+          </div>
     </div>
   );
 };
 
 export default MovieCard;
+                

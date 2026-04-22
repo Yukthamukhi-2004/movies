@@ -116,7 +116,7 @@ function TrendingMovies({
           </div>
 
           {/* Movie Slider */}
-          <div className="carousel-demo max-h-25dvh w-overflow-hidden ">
+          {/* <div className="carousel-demo  "> */}
             <Carousel
               value={movies.slice(0, 12)}
               numVisible={4}
@@ -124,12 +124,11 @@ function TrendingMovies({
               circular
               responsiveOptions={responsiveOptions}
               pt={{
-                root: { className: "max-h-[70dvh] " },
                 content: { className: "h-full" },
                 container: { className: "h-60dvh" },
-                itemsContainer: { className: "h-auto gap-3" },
+                itemsContainer: { className: "h-auto gap-6" },
                 item: { className: "h-90%" },
-                nextButtonIcon: { className: "h-10px" },
+                nextButtonIcon: { className: "h-40px" },
                 indicators: { className: "hidden!" },
               }}
               itemTemplate={(item) => {
@@ -139,7 +138,7 @@ function TrendingMovies({
                   ) || false;
 
                 return (
-                  <div className="px-2 h-full pb-2">
+                  <div className="p-6  h-full pb-2">
                     <MovieCard
                       item={item}
                       handleShowInfo={handleShowInfo}
@@ -152,7 +151,7 @@ function TrendingMovies({
                 );
               }}
             />
-          </div>
+          {/* </div> */}
         </>
       )}
 
