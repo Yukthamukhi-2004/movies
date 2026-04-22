@@ -24,7 +24,7 @@ function ListView({ onAddToWatchlist, movies, watchlist }: ListProps) {
   return (
     <div>
       <div className="flex flex-col max-w-[87vw] gap-4 w-full px-4">
-        <span className="pi pi-arrow-left" onClick={() => navigate(" / ")}>
+        <span className="pi pi-arrow-left" onClick={() => navigate("/")}>
           Back
         </span>
         <ul className={"flex flex-col gap-4 w-full px-4"}>

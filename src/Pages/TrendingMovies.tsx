@@ -37,10 +37,10 @@ function TrendingMovies({
   };
 
   const responsiveOptions = [
-    { breakpoint: "1400px", numVisible: 5, numScroll: 3 },
-    { breakpoint: "1199px", numVisible: 4, numScroll: 3 },
-    { breakpoint: "767px", numVisible: 2, numScroll: 2 },
-    { breakpoint: "575px", numVisible: 1, numScroll: 1 },
+    { breakpoint: "1400px", numVisible: 4, numScroll: 3 },
+    { breakpoint: "1199px", numVisible: 3, numScroll: 3 },
+    { breakpoint: "767px", numVisible: 2, numScroll: 3 },
+    { breakpoint: "575px", numVisible: 1, numScroll: 3 },
   ];
 
   useEffect(() => {
@@ -116,20 +116,27 @@ function TrendingMovies({
           </div>
 
           {/* Movie Slider */}
-          <div className="carousel-demo max-h-25dvh w-overflow-hidden ">
+          <div className="carousel-demo w-overflow-hidden ">
             <Carousel
               value={movies.slice(0, 12)}
               numVisible={4}
               numScroll={1}
-              circular
+              circular={false}
               responsiveOptions={responsiveOptions}
               pt={{
-                root: { className: "max-h-[70dvh] " },
-                content: { className: "h-full" },
-                container: { className: "h-60dvh" },
-                itemsContainer: { className: "h-auto gap-3" },
-                item: { className: "h-90%" },
-                nextButtonIcon: { className: "h-10px" },
+                root: { className: "max-h-[70dvh] relative " },
+                content: { className: "overflow-hidden" },
+                container: { className: "flex" },
+                itemsContainer: { className: "flex flex-row gap-4" },
+                item: { className: "flex-shrink-0" },
+                previousButton: {
+                  className:
+                    "absolute left-0 z-10 bg-black/50 hover:bg-black/80 text-white rounded-full",
+                },
+                nextButton: {
+                  className:
+                    "absolute right-0 z-10 bg-black/50 hover:bg-black/80 text-white rounded-full",
+                },
                 indicators: { className: "hidden!" },
               }}
               itemTemplate={(item) => {
