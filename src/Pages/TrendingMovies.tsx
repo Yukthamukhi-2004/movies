@@ -10,7 +10,6 @@ interface TrendingProps {
   movies: TraktMovies[];
   setMovies: React.Dispatch<React.SetStateAction<TraktMovies[]>>;
   watchlist: TraktMovies[];
-  isListView: boolean;
 }
 
 function TrendingMovies({
@@ -18,7 +17,6 @@ function TrendingMovies({
   setMovies,
   onAddToWatchlist,
   watchlist,
-  isListView,
 }: TrendingProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showAll, setShowAll] = useState<boolean>(false);
@@ -98,11 +96,9 @@ console.log("Fetch Response:", res);
             : "No movies match the current filters."}
         </p>
       )}
-      <ul
+      <div
         className={
-          isListView
-            ? "flex flex-col gap-4 w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12"
-            : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+             "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6"
         }
       >
         {displayedMovies?.map((item) => {
@@ -119,7 +115,7 @@ console.log("Fetch Response:", res);
             <MovieCard
               key={item.movie.ids.trakt}
               item={item}
-              isListView={isListView}
+              // isListView={isListView}
               handleShowInfo={handleShowInfo}
               onAddToWatchlist={onAddToWatchlist}
               isAdded={isAdded}
@@ -127,8 +123,11 @@ console.log("Fetch Response:", res);
             />
           );
         })}
-      </ul>
+      </div>
 
+<div className="flex justify-center mt-10 mb-10">
+  
+  </div>
       {(movies.length || 0) > 21 && (
         <div className="flex justify-center mt-10 mb-10">
           <button

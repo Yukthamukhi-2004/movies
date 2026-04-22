@@ -8,7 +8,7 @@ import "../styles/MovieCard.css";
 interface MovieCardProps {
   item: TraktMovies;
   onAddToWatchlist: (movie: TraktMovies) => void;
-  isListView: boolean;
+  // isListView: boolean;
   handleShowInfo: (movie: TraktMovies) => void;
   isAdded: boolean;
   tooltip: null;
@@ -16,7 +16,7 @@ interface MovieCardProps {
 
 const MovieCard = ({
   item,
-  isListView,
+  // isListView,
   onAddToWatchlist,
   handleShowInfo,
   isAdded,
@@ -51,9 +51,9 @@ const MovieCard = ({
           
         <div
               className={
-                isListView
-                  ? "w-[200px] min-w-[100px] h-90% m-2 shrink-0 overflow-hidden rounded-l-xl"
-                  : "w-90% aspect-2/3 overflow-hidden "
+                // isListView
+                  // ? "w-[200px] min-w-[100px] h-90% m-2 shrink-0 overflow-hidden rounded-l-xl"
+                   "w-90% aspect-2/3 overflow-hidden "
               }
             >
               <Image
@@ -70,9 +70,8 @@ const MovieCard = ({
             </div>
           <div
             className={
-              isListView
-                ? "flex flex-col justify-items-start py-4 gap-6 mt-2"
-                : " flex flex-col text-center items-center gap-1.5 my-8 "
+             "flex flex-col justify-items-start py-4 gap-6 mt-2"
+                // : " flex flex-col text-center items-center gap-1.5 my-8 "
             }
           >
             <span className="text-md text-gray-700 dark:text-gray-300! ">
@@ -100,15 +99,15 @@ const MovieCard = ({
             </div>
 
             <div className="flex-grow:1">
-              {isListView && (
+              {/* {isListView && ( */}
                 <p className=" text-gray-600 dark:text-zinc-300! text-md line-clamp-4 leading-relaxed">
                   {overview}
                 </p>
-              )}
+              {/* )} */}
             </div>
 
             <div
-              className={`mt-4 flex ${isListView ? "gap-380!" : " gap-55!"}`}
+              className={`mt-4 flex gap-380!`}
             >
               <Button
                 icon="pi pi-info-circle"
