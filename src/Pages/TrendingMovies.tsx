@@ -120,22 +120,22 @@ function TrendingMovies({
             <Carousel
               value={movies.slice(0, 12)}
               numVisible={4}
-              numScroll={1}
+              numScroll={3}
               circular={false}
               responsiveOptions={responsiveOptions}
               pt={{
-                root: { className: "max-h-[70dvh] relative " },
-                content: { className: "overflow-hidden" },
-                container: { className: "flex" },
+                root: { className: "max-h-[380px] relative " },
+                content: { className: "overflow-visible" },
+                container: { className: "flex h-full" },
                 itemsContainer: { className: "flex flex-row gap-4" },
-                item: { className: "flex-shrink-0" },
+                item: { className: "flex-shrink-0 h-full" },
                 previousButton: {
                   className:
-                    "absolute left-0 z-10 bg-black/50 hover:bg-black/80 text-white rounded-full",
+                    "absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/80 text-white rounded-full",
                 },
                 nextButton: {
                   className:
-                    "absolute right-0 z-10 bg-black/50 hover:bg-black/80 text-white rounded-full",
+                    "absolute right-0 top-1/2  -translate-y-1/2  z-10 bg-black/50 hover:bg-black/80 text-white rounded-full",
                 },
                 indicators: { className: "hidden!" },
               }}
@@ -146,7 +146,7 @@ function TrendingMovies({
                   ) || false;
 
                 return (
-                  <div className="px-2 h-full pb-2">
+                  <div className="px-1.5 h-full pb-2">
                     <MovieCard
                       item={item}
                       handleShowInfo={handleShowInfo}

@@ -37,8 +37,8 @@ const MovieCard = ({
   const overview = item.movie.overview || item.movie.overview || "No overview";
 
   return (
-    <div>
-      <li className="list-none">
+    <div className="h-full">
+      <li className="list-none h-full">
         <Tooltip
           target=".movie-title-tooltip"
           mouseTrack
@@ -49,15 +49,15 @@ const MovieCard = ({
         />
         <Card
           unstyled
-          className={` ${
-            isListView ? "w-70% gap-4 h-[120px] " : "flex flex-col  gap-2"
+          className={`h-full ${
+            isListView ? "w-70% gap-4 h-[120px] " : "flex flex-col h-full"
           } bg-white dark:bg-zinc-900 border-gray-300 dark:border-zinc-700 rounded-xl`}
           pt={{
             root: {
               className: `flex h-full ${isListView ? "flex-row" : "flex-col"}`,
             },
             body: {
-              className: "p-4 flex flex-col flex-grow min-w-0 overflow-hidden",
+              className: "p-4 flex flex-col min-w-0 overflow-hidden",
             },
             content: { className: "p-0" },
           }}
@@ -76,7 +76,7 @@ const MovieCard = ({
                 pt={{
                   root: { className: "block w-full h-full" },
                   image: {
-                    className: "w-full h-full object-cover block rounded-xl",
+                    className: "w-full h-full object-cover block rounded-t-xl",
                   },
                 }}
               />
