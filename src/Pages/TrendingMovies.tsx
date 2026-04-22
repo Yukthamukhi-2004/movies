@@ -2,8 +2,11 @@ import { useState, useEffect } from "react";
 import type { TraktMovies } from "../types/trakt";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import "primeicons/primeicons.css";
+import { Carousel } from "primereact/carousel";
+import { useNavigate } from "react-router-dom";
 import PopUp from "./PopUp.tsx";
 import MovieCard from "./MovieCard.tsx";
+import { ChevronRightIcon } from "@heroicons/react/24/outline";
 
 interface TrendingProps {
   onAddToWatchlist: (movie: TraktMovies) => void;
@@ -18,15 +21,13 @@ function TrendingMovies({
   setMovies,
   onAddToWatchlist,
   watchlist,
-  isListView,
 }: TrendingProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [showAll, setShowAll] = useState<boolean>(false);
   const [openModel, setOpenModel] = useState<boolean>(false);
   const [selectedMovie, setSelectedMovie] = useState<TraktMovies | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const displayedMovies = showAll ? movies : movies.slice(0, 21);
+  const navigate = useNavigate();
 
   const handleShowInfo = (movie: TraktMovies) => {
     setTimeout(() => {
@@ -34,6 +35,13 @@ function TrendingMovies({
       setOpenModel(true);
     }, 0);
   };
+
+  const responsiveOptions = [
+    { breakpoint: "1400px", numVisible: 5, numScroll: 3 },
+    { breakpoint: "1199px", numVisible: 4, numScroll: 3 },
+    { breakpoint: "767px", numVisible: 2, numScroll: 2 },
+    { breakpoint: "575px", numVisible: 1, numScroll: 1 },
+  ];
 
   useEffect(() => {
     async function fetchMovies(): Promise<void> {
@@ -78,63 +86,77 @@ function TrendingMovies({
 
     fetchMovies();
   }, [setMovies]);
+
   return (
-    <div className="min-h-full bg-white p-2 md:p-4 dark:bg-black! gap-5">
+    <div className="bg-white p-2 md:p-4 dark:bg-black transition-colors duration-300">
       {isLoading && (
-        <p className="text-black dark:text-white!">Loading movies...</p>
-      )}
-      {error && <p className="text-red-600 dark:text-red-400!">{error}</p>}
-      {!isLoading && !error && displayedMovies.length === 0 && (
-        <p className="text-black dark:text-white!">
-          {movies.length === 0
-            ? "No movies match the current filters."
-            : "No movies match the current filters."}
+        <p className="text-black dark:text-white p-4 text-center">
+          Loading movies...
         </p>
       )}
-      <ul
-        className={
-          isListView
-            ? "flex flex-col gap-4 w-full px-4"
-            : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-        }
-      >
-        {displayedMovies?.map((item) => {
-          if (!item?.movie?.ids?.trakt) {
-            return null;
-          }
 
-          const isAdded =
-            watchlist?.some(
-              (w) => w.movie?.ids?.trakt === item.movie.ids.trakt,
-            ) || false;
-
-          return (
-            <MovieCard
-              key={item.movie.ids.trakt}
-              item={item}
-              handleShowInfo={handleShowInfo}
-              onAddToWatchlist={onAddToWatchlist}
-              isAdded={isAdded}
-              tooltip={null}
-            />
-          );
-        })}
-      </ul>
-
-      {(movies.length || 0) > 21 && (
-        <div className="flex justify-center mt-10 mb-10">
-          <button
-            onClick={() => setShowAll(!showAll)}
-            className="w-4/5 h-12 rounded-2xl bg-white text-zinc-900 border border-zinc-400 dark:bg-black!   dark:text-white! dark:border-zinc-700! flex items-center justify-center gap-2 transition-all duration-300"
-          >
-            {showAll ? "See Less" : "See All"}
-            <i
-              className={showAll ? "pi pi-chevron-up" : "pi pi-chevron-down"}
-            ></i>
-          </button>
-        </div>
+      {error && (
+        <p className="text-red-600 dark:text-red-400 p-4 text-center">
+          {error}
+        </p>
       )}
 
+      {!isLoading && !error && (
+        <>
+          {/* Section Heading */}
+          <div
+            className="flex items-center group cursor-pointer gap-5 w-fit mb-6 ml-2"
+            onClick={() => navigate("/ListView")}
+          >
+            <div className="w-1.5 h-8 bg-yellow-500 rounded-sm mr-3"></div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+              Trending Movies
+              <ChevronRightIcon className="w-6 h-6 ml-2 text-gray-400 group-hover:text-yellow-500 transition-colors" />
+            </h3>
+          </div>
+
+          {/* Movie Slider */}
+          <div className="carousel-demo max-h-25dvh w-overflow-hidden ">
+            <Carousel
+              value={movies.slice(0, 12)}
+              numVisible={4}
+              numScroll={1}
+              circular
+              responsiveOptions={responsiveOptions}
+              pt={{
+                root: { className: "max-h-[70dvh] " },
+                content: { className: "h-full" },
+                container: { className: "h-60dvh" },
+                itemsContainer: { className: "h-auto gap-3" },
+                item: { className: "h-90%" },
+                nextButtonIcon: { className: "h-10px" },
+                indicators: { className: "hidden!" },
+              }}
+              itemTemplate={(item) => {
+                const isAdded =
+                  watchlist?.some(
+                    (w) => w.movie?.ids?.trakt === item.movie.ids.trakt,
+                  ) || false;
+
+                return (
+                  <div className="px-2 h-full pb-2">
+                    <MovieCard
+                      item={item}
+                      handleShowInfo={handleShowInfo}
+                      onAddToWatchlist={onAddToWatchlist}
+                      isListView={false}
+                      isAdded={isAdded}
+                      tooltip={null}
+                    />
+                  </div>
+                );
+              }}
+            />
+          </div>
+        </>
+      )}
+
+      {/* Shared Popup Instance */}
       <PopUp
         visible={openModel}
         setVisible={setOpenModel}

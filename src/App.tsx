@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import type { TraktMovies } from "./types/trakt";
 import TrendingMovies from "./Pages/TrendingMovies";
+import ListView from "./Pages/ListView";
 import WatchList from "./Pages/WatchList";
 import "primeicons/primeicons.css";
 import "./styles/App.css";
@@ -73,7 +74,7 @@ function App() {
 
   return (
     <div className="app-container flex h-screen flex-col px-2">
-      <header className="z-50 flex  shrink-0 items-center justify-between border-b border-zinc-300 bg-white px-8 transition-colors duration-300 dark:border-zinc-800! dark:bg-black!">
+      <header className="z-50 h-20 max-w-[90vw] flex  shrink-0 items-center justify-between border-b border-zinc-300 bg-white px-8 transition-colors duration-300 dark:border-zinc-800! dark:bg-black!">
         <div className="flex flex-col gap-2 items-center">
           <h1
             className="text-4xl font-extrabold text-black dark:text-white! cursor-pointer hover:text-gray-600"
@@ -81,9 +82,6 @@ function App() {
           >
             My Movie App
           </h1>
-          <h2 className="text-xl text-yellow-600 dark:text-yellow-400 font-semibold mt-1">
-            Trending Movies
-          </h2>
         </div>
 
         <div className="flex gap-6 items-center">
@@ -135,52 +133,6 @@ function App() {
                 className: "flex items-center gap-2 bg-white dark:bg-black!",
               },
             }}
-          />
-          <Button
-            label={isListView ? "GridView" : "ListView"}
-            unstyled
-            pt={{
-              icon: {
-                className: "text-black dark:text-white",
-              },
-              root: {
-                className: "flex items-center gap-2 bg-white dark:bg-black!",
-              },
-            }}
-            icon={
-              isListView ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                  />
-                </svg>
-              )
-            }
-            onClick={() => setIsListView(!isListView)}
           />
         </div>
       </header>
@@ -248,7 +200,7 @@ function App() {
         </div>
       )}
 
-      <main className="flex flex-1 overflow-hidden bg-white dark:bg-zinc-950">
+      <main className="flex flex-1 max-w-[90vw] overflow-hidden bg-white dark:bg-zinc-950">
         <div className="flex-1 min-h-0 overflow-y-auto no-scrollbar transition-all duration-300 ease-in-out">
           <Routes>
             <Route
@@ -274,7 +226,16 @@ function App() {
                     )
                   }
                   onClear={() => setWatchlist([])}
-                  isListView={isListView}
+                />
+              }
+            />
+            <Route
+              path="/ListView"
+              element={
+                <ListView
+                  movies={movies}
+                  watchlist={watchlist}
+                  onAddToWatchlist={addToWatchlist}
                 />
               }
             />

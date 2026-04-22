@@ -196,3 +196,19 @@
   flex-direction: row;
   gap: 1650px;
 }
+
+.p-carousel-items-content {
+  height: 100% !important;
+  overflow: hidden;
+}
+
+.p-carousel-item img {
+  max-height: 100%;
+  width: auto; /* Or keep w-full if you want it to fill width but stay within height */
+  object-fit: cover;
+}
+
+.p-carousel {
+  max-width: 100vw; /* Ensure it never exceeds the screen width */
+  width: 100%; /* Take up the available space */
+}

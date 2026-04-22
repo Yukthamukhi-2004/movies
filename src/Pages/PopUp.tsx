@@ -13,7 +13,7 @@ interface PopUpProps {
 }
 
 function PopUp({ visible, setVisible, movie }: PopUpProps) {
-  const [showVideo, setShowVideo] = useState(false);
+  const [showVideo, setShowVideo] = useState<boolean>(false);
 
   // ✅ Lazy load video — wait 300ms after popup opens before rendering iframe
   useEffect(() => {

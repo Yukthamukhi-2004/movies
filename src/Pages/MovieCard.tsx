@@ -49,8 +49,8 @@ const MovieCard = ({
         />
         <Card
           unstyled
-          className={`overflow-hidden hover:scale-[1.01] transition-transform border shadow-md ${
-            isListView ? "w-70% gap-4 h-[120px] " : "flex flex-col h-full gap-2"
+          className={` ${
+            isListView ? "w-70% gap-4 h-[120px] " : "flex flex-col  gap-2"
           } bg-white dark:bg-zinc-900 border-gray-300 dark:border-zinc-700 rounded-xl`}
           pt={{
             root: {
@@ -58,15 +58,15 @@ const MovieCard = ({
             },
             body: {
               className: "p-4 flex flex-col flex-grow min-w-0 overflow-hidden",
-            }, // This styles the actual container
-            content: { className: "p-0" }, // Removes default padding that might be ruining your layout
+            },
+            content: { className: "p-0" },
           }}
           header={
             <div
               className={
                 isListView
                   ? "w-[200px] min-w-[100px] h-90% m-2 shrink-0 overflow-hidden rounded-l-xl"
-                  : "w-90% aspect-2/3 overflow-hidden "
+                  : "w-full aspect-2/3 overflow-hidden "
               }
             >
               <Image
@@ -122,9 +122,7 @@ const MovieCard = ({
               )}
             </div>
 
-            <div
-              className={`mt-4 flex ${isListView ? "gap-380!" : " gap-55!"}`}
-            >
+            <div className="flex flex-row justify-between items-center w-full !p-5">
               <Button
                 icon="pi pi-info-circle"
                 onClick={() => handleShowInfo(item)}
