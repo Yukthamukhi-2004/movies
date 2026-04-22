@@ -112,7 +112,6 @@ function TrendingMovies({
             <MovieCard
               key={item.movie.ids.trakt}
               item={item}
-              isListView={isListView}
               handleShowInfo={handleShowInfo}
               onAddToWatchlist={onAddToWatchlist}
               isAdded={isAdded}
