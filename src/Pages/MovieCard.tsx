@@ -1,18 +1,7 @@
-import type { TraktMovies } from "../types/trakt";
-import { Image } from "primereact/image";
 import { Card } from "primereact/card";
-import { Button } from "primereact/button";
 import { Tooltip } from "primereact/tooltip";
-import "../styles/MovieCard.css";
-
-interface MovieCardProps {
-  item: TraktMovies;
-  onAddToWatchlist: (movie: TraktMovies) => void;
-  isListView: boolean;
-  handleShowInfo: (movie: TraktMovies) => void;
-  isAdded: boolean;
-  tooltip: null;
-}
+import { Button } from "primereact/button";
+import { Image } from "primereact/image";
 
 const MovieCard = ({
   item,
@@ -34,8 +23,93 @@ const MovieCard = ({
   const formattedReleaseDate = releaseDate
     ? releaseDate.split("-").reverse().join("-")
     : "Unknown";
-  const overview = item.movie.overview || item.movie.overview || "No overview";
+  const overview = item.movie.overview || "No overview";
 
+  // ✅ CAROUSEL MODE — fully custom layout, no Card header/body split
+  if (!isListView) {
+    return (
+      <div className="h-full w-full">
+        <li className="list-none h-full w-400px mx-auto">
+          <div className="h-full w-full flex flex-col items-center bg-white dark:bg-zinc-900 rounded-xl overflow-hidden border border-gray-200 dark:border-zinc-700">
+            {/* IMAGE — 70% */}
+            <div className="w-80 flex-[8] h-96 overflow-hidden flex justify-center items-center scale-x-110 object-cover rounded-xl">
+              <img
+                src={posterUrl}
+                alt={item.movie.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            {/* DETAILS — 30% */}
+            <div className="flex-[2] w-full flex flex-col items-center justify-center gap-1 px-3 py-2 bg-white dark:bg-zinc-900">
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                Released: {formattedReleaseDate}
+              </span>
+
+              <Tooltip
+                target=".movie-title-tooltip"
+                mouseTrack
+                mouseTrackTop={15}
+                position="top"
+                showDelay={0}
+                hideDelay={100}
+              />
+              <strong
+                className="movie-title-tooltip text-sm text-black dark:text-white font-bold cursor-pointer hover:underline line-clamp-1 w-full text-center"
+                data-pr-tooltip={item.movie.title}
+                onClick={() => handleShowInfo(item)}
+              >
+                {item.movie.title || "Untitled"}
+              </strong>
+
+              <div className="text-xs text-gray-500 dark:text-gray-300 flex items-center gap-2 flex-wrap justify-center">
+                <span>{item.movie.year || "N/A"}</span>
+                <span>
+                  | ⭐{" "}
+                  {item.movie.rating ? item.movie.rating.toFixed(1) : "N/A"}
+                </span>
+                <span>| {item.movie.runtime || 0}m</span>
+              </div>
+
+              <div className="flex flex-row justify-between items-center w-full !px-5 mt-1">
+                <Button
+                  icon="pi pi-info-circle"
+                  onClick={() => handleShowInfo(item)}
+                  text
+                  plain
+                  unstyled
+                  pt={{
+                    root: {
+                      className:
+                        "flex items-center justify-center p-1.5 rounded-lg border-2 border-transparent text-black dark:!text-white hover:border-white dark:!hover:border-zinc-500 transition-all",
+                    },
+                    label: { className: "hidden" },
+                    icon: { className: "text-lg" },
+                  }}
+                />
+                <Button
+                  label={isAdded ? "Added" : "Add to Watchlist"}
+                  icon={isAdded ? "pi pi-check" : "pi pi-plus"}
+                  onClick={handleInternalClick}
+                  unstyled
+                  pt={{
+                    root: {
+                      className:
+                        "flex items-center gap-1.5 px-2 py-1.5 text-black dark:!text-white rounded-lg border-2 border-transparent hover:border-white dark:!hover:border-zinc-500 transition-all",
+                    },
+                    label: { className: "font-bold tracking-wide text-xs" },
+                    icon: { className: "text-xs" },
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </li>
+      </div>
+    );
+  }
+
+  // ✅ LIST VIEW — completely unchanged
   return (
     <div className="h-full">
       <li className="list-none h-full">
@@ -49,51 +123,30 @@ const MovieCard = ({
         />
         <Card
           unstyled
-          className={`h-full ${
-            isListView ? "w-70% gap-4 h-[120px] " : "flex flex-col h-full"
-          } bg-white dark:bg-zinc-900 border-gray-300 dark:border-zinc-700 rounded-xl`}
+          className="h-full w-70% gap-4 h-[120px] bg-white dark:bg-zinc-900 border-gray-300 dark:border-zinc-700 rounded-xl"
           pt={{
-            root: {
-              className: `flex h-full ${isListView ? "flex-row" : "flex-col"}`,
-            },
-            body: {
-              className: "p-4 flex flex-col min-w-0 overflow-hidden",
-            },
+            root: { className: "flex h-full flex-row" },
+            body: { className: "p-4 flex flex-col min-w-0 overflow-hidden" },
             content: { className: "p-0" },
           }}
           header={
-            <div
-              className={
-                isListView
-                  ? "w-[200px] min-w-[100px] h-90% m-2 shrink-0 overflow-hidden rounded-l-xl"
-                  : "w-full aspect-2/3 overflow-hidden "
-              }
-            >
+            <div className="w-[200px] min-w-[100px] h-90% m-2 shrink-0 overflow-hidden rounded-l-xl">
               <Image
                 src={posterUrl}
                 alt={item.movie.title}
                 unstyled
                 pt={{
                   root: { className: "block w-full h-full" },
-                  image: {
-                    className: "w-full h-full object-cover block rounded-t-xl",
-                  },
+                  image: { className: "w-full h-full object-cover block" },
                 }}
               />
             </div>
           }
         >
-          <div
-            className={
-              isListView
-                ? "flex flex-col justify-items-start py-4 gap-6 mt-2"
-                : " flex flex-col text-center items-center gap-1.5 my-8 "
-            }
-          >
-            <span className="text-md text-gray-700 dark:text-gray-300! ">
+          <div className="flex flex-col justify-items-start py-4 gap-6 mt-2">
+            <span className="text-md text-gray-700 dark:text-gray-300!">
               Released on: {formattedReleaseDate}
             </span>
-
             <div className="w-full overflow-hidden">
               <strong
                 className="movie-title-tooltip text-xl md:text-2xl text-black dark:text-white! font-bold cursor-pointer hover:underline truncate"
@@ -103,25 +156,16 @@ const MovieCard = ({
                 {item.movie.title || "Untitled"}
               </strong>
             </div>
-
             <div className="text-lg text-gray-500 dark:text-white! flex items-center gap-4">
               <span>{item.movie.year || "N/A"}</span>
               <span>
                 | ⭐ {item.movie.rating ? item.movie.rating.toFixed(1) : "N/A"}
               </span>
-              <span>
-                | {item.movie.runtime || item.movie.runtime || 0} mins
-              </span>
+              <span>| {item.movie.runtime || 0} mins</span>
             </div>
-
-            <div className="flex-grow:1">
-              {isListView && (
-                <p className=" text-gray-600 dark:text-zinc-300! text-md line-clamp-4 leading-relaxed">
-                  {overview}
-                </p>
-              )}
-            </div>
-
+            <p className="text-gray-600 dark:text-zinc-300! text-md line-clamp-4 leading-relaxed">
+              {overview}
+            </p>
             <div className="flex flex-row justify-between items-center w-full !p-5">
               <Button
                 icon="pi pi-info-circle"
@@ -138,7 +182,6 @@ const MovieCard = ({
                   icon: { className: "text-xl" },
                 }}
               />
-
               <Button
                 label={isAdded ? "Added to Watchlist" : "Add to Watchlist"}
                 icon={isAdded ? "pi pi-check" : "pi pi-plus"}

@@ -124,11 +124,11 @@ function TrendingMovies({
               circular={false}
               responsiveOptions={responsiveOptions}
               pt={{
-                root: { className: "max-h-[380px] relative " },
-                content: { className: "overflow-visible" },
+                root: { className: "max-h-[550px] relative " },
+                content: { className: "overflow-hidden" },
                 container: { className: "flex h-full" },
-                itemsContainer: { className: "flex flex-row gap-4" },
-                item: { className: "flex-shrink-0 h-full" },
+                itemsContainer: { className: "flex flex-row " },
+                item: { className: "flex-shrink-0 w-full h-full " },
                 previousButton: {
                   className:
                     "absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/80 text-white rounded-full",
@@ -146,7 +146,7 @@ function TrendingMovies({
                   ) || false;
 
                 return (
-                  <div className="px-1.5 h-full pb-2">
+                  <div className="px-1.5 h-[540px] w-auto pb-2">
                     <MovieCard
                       item={item}
                       handleShowInfo={handleShowInfo}
