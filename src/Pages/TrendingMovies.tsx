@@ -14,6 +14,7 @@ interface TrendingProps {
   setMovies: React.Dispatch<React.SetStateAction<TraktMovies[]>>;
   watchlist: TraktMovies[];
   isListView: boolean;
+  setIsListView: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function TrendingMovies({
@@ -21,6 +22,7 @@ function TrendingMovies({
   setMovies,
   onAddToWatchlist,
   watchlist,
+  setIsListView,
 }: TrendingProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [openModel, setOpenModel] = useState<boolean>(false);
@@ -106,7 +108,10 @@ function TrendingMovies({
           {/* Section Heading */}
           <div
             className="flex items-center group cursor-pointer gap-5 w-fit mb-6 ml-2"
-            onClick={() => navigate("/ListView")}
+            onClick={() => {
+              setIsListView(true);
+              navigate("/ListView");
+            }}
           >
             <div className="w-1.5 h-8 bg-yellow-500 rounded-sm mr-3"></div>
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
@@ -118,9 +123,9 @@ function TrendingMovies({
           {/* Movie Slider */}
           <div className="carousel-demo w-overflow-hidden ">
             <Carousel
-              value={movies.slice(0, 12)}
-              numVisible={4}
-              numScroll={3}
+              value={movies.slice(0, 20)}
+              numVisible={5}
+              numScroll={4}
               circular={false}
               responsiveOptions={responsiveOptions}
               pt={{

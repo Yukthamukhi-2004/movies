@@ -2,6 +2,16 @@ import { Card } from "primereact/card";
 import { Tooltip } from "primereact/tooltip";
 import { Button } from "primereact/button";
 import { Image } from "primereact/image";
+import type { TraktMovies } from "../types/trakt";
+
+interface MovieCardProps {
+  item: TraktMovies;
+  isListView: boolean;
+  onAddToWatchlist: (movie: TraktMovies) => void;
+  isAdded: boolean;
+  handleShowInfo: (movie: TraktMovies) => void;
+  tooltip?: unknown;
+}
 
 const MovieCard = ({
   item,
@@ -123,14 +133,14 @@ const MovieCard = ({
         />
         <Card
           unstyled
-          className="h-full w-70% gap-4 h-[120px] bg-white dark:bg-zinc-900 border-gray-300 dark:border-zinc-700 rounded-xl"
+          className=" flex flex-row w-70% gap-4 h-[120px] bg-white dark:bg-zinc-900 border !border-zinc-300 dark:!border-zinc-700 rounded-xl"
           pt={{
             root: { className: "flex h-full flex-row" },
             body: { className: "p-4 flex flex-col min-w-0 overflow-hidden" },
             content: { className: "p-0" },
           }}
           header={
-            <div className="w-[200px] min-w-[100px] h-90% m-2 shrink-0 overflow-hidden rounded-l-xl">
+            <div className="w-[200px] min-w-[100px] h-full m-2 shrink-0 overflow-hidden rounded-l-xl">
               <Image
                 src={posterUrl}
                 alt={item.movie.title}

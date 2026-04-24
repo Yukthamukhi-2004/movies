@@ -17,12 +17,10 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
 
   // ✅ Lazy load video — wait 300ms after popup opens before rendering iframe
   useEffect(() => {
-    if (visible) {
-      const t = setTimeout(() => setShowVideo(true), 300);
-      return () => clearTimeout(t);
-    } else {
-      setShowVideo(false);
-    }
+    if (!visible) return;
+
+    const t = setTimeout(() => setShowVideo(true), 300);
+    return () => clearTimeout(t);
   }, [visible]);
 
   const posterPath =
@@ -57,7 +55,10 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
     <div className="text">
       <Dialog
         visible={visible}
-        onHide={() => setVisible(false)}
+        onHide={() => {
+          setShowVideo(false);
+          setVisible(false);
+        }}
         style={{
           width: "50vw",
           fontWeight: "bold",

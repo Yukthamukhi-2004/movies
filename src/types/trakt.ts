@@ -17,6 +17,7 @@ export interface TraktMovies {
     language?: string;
     available_translations?: string[];
     genres?: string[];
+    certification?: string;
     ids: {
       trakt: number;
       slug?: string;

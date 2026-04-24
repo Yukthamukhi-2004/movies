@@ -2,18 +2,19 @@ import { useMemo } from "react";
 import type { TraktMovies } from "../types/trakt";
 import { ListBox } from "primereact/listbox";
 import { Checkbox } from "primereact/checkbox";
-import { Slider } from "primereact/slider";
-import { debounce } from "lodash";
 import { Button } from "primereact/button";
 import type { FilterOption } from "../components/filters";
 import { FILTER_OPTIONS } from "../components/filters";
+import { InputNumber } from "primereact/inputnumber";
 import "../styles/Filter.css";
 
 interface FilterProps {
   movies: TraktMovies[];
   allMovies: TraktMovies[];
-  selectedYear: number | null;
-  setSelectedYear: (year: number | null) => void;
+  selectedYear: { min: number; max: number };
+  setSelectedYear: React.Dispatch<
+    React.SetStateAction<{ min: number; max: number }>
+  >;
   clearAllFilters: () => void;
   selectedGenres: { name: string; key: string }[];
   setSelectedGenres: (genres: { name: string; key: string }[]) => void;
@@ -21,20 +22,13 @@ interface FilterProps {
   setOpenFilters: (open: boolean) => void;
   selectedFilter: FilterOption | null;
   setSelectedFilter: (filter: FilterOption | null) => void;
-  ratingThreshold: number;
-  setRatingThreshold: (rating: number) => void;
-  debouncedRating: number;
-  setDebouncedRating: (rating: number) => void;
-}
-
-interface YearsListProps {
-  movies: TraktMovies[];
-  onYearChange: (year: number | null) => void;
-  selectedYear: number | null;
+  ratingRange: { min: number; max: number };
+  setRatingRange: React.Dispatch<
+    React.SetStateAction<{ min: number; max: number }>
+  >;
 }
 
 function Filter({
-  movies,
   allMovies,
   selectedYear,
   setSelectedYear,
@@ -45,10 +39,8 @@ function Filter({
   setOpenFilters,
   selectedFilter,
   setSelectedFilter,
-  setRatingThreshold,
-  debouncedRating,
-  setDebouncedRating,
-  ratingThreshold,
+  ratingRange,
+  setRatingRange,
 }: FilterProps) {
   const allGenres = useMemo(() => {
     const genresSet = new Set(
@@ -62,19 +54,11 @@ function Filter({
     }));
   }, [allMovies]);
 
-  const updateDebouncedRating = useMemo(
-    () => debounce((val: number) => setDebouncedRating(val), 300),
-    [setDebouncedRating],
-  );
-
   const hasActiveFilters =
-    selectedYear !== null || selectedGenres.length > 0 || ratingThreshold > 0;
-
-  const handleRatingChange = (e: any) => {
-    const newValue = e.value;
-    setRatingThreshold(newValue);
-    updateDebouncedRating(newValue);
-  };
+    selectedYear !== null ||
+    selectedGenres.length > 0 ||
+    ratingRange.min > 0 ||
+    ratingRange.max < 10;
 
   const handleGenreChange = (e: {
     value: { name: string; key: string };
@@ -158,15 +142,47 @@ function Filter({
             }`}
           >
             {selectedFilter?.code === "Y" && (
-              <div className="pl-6">
-                <h3 className="block font-bold mb-3 text-xl text-zinc-400 pl-8 uppercase tracking-wider">
-                  Select Year
-                </h3>
-                <YearsList
-                  movies={allMovies}
-                  onYearChange={(year) => setSelectedYear(year)}
-                  selectedYear={selectedYear}
-                />
+              <div className="flex items-center gap-3">
+                <div className="flex-1">
+                  <label className="text-xs text-zinc-500 block mb-1">
+                    From
+                  </label>
+                  <InputNumber
+                    value={selectedYear.min}
+                    onValueChange={(e) =>
+                      setSelectedYear({ ...selectedYear, min: e.value ?? 1994 })
+                    }
+                    showButtons
+                    buttonLayout="stacked"
+                    incrementButtonIcon="pi pi-angle-up"
+                    decrementButtonIcon="pi pi-angle-down"
+                    min={selectedYear.min}
+                    max={selectedYear.max}
+                    useGrouping={false}
+                    inputClassName="w-full p-2 border rounded dark:bg-zinc-800 dark:border-zinc-700"
+                  />
+                </div>
+
+                <span className="mt-6 text-zinc-400">-</span>
+
+                {/* TO BOX */}
+                <div className="flex-1">
+                  <label className="text-xs text-zinc-500 block mb-1">To</label>
+                  <InputNumber
+                    value={selectedYear.max}
+                    onValueChange={(e) =>
+                      setSelectedYear({ ...selectedYear, min: e.value ?? 2026 })
+                    }
+                    showButtons
+                    buttonLayout="stacked"
+                    incrementButtonIcon="pi pi-angle-up"
+                    decrementButtonIcon="pi pi-angle-down"
+                    min={selectedYear.min}
+                    max={2026}
+                    useGrouping={false}
+                    inputClassName="w-full p-2 border rounded dark:bg-zinc-800 dark:border-zinc-700"
+                  />
+                </div>
               </div>
             )}
 
@@ -210,33 +226,58 @@ function Filter({
 
             {selectedFilter?.code === "R" && (
               <div className="p-4">
-                <h3 className="font-bold text-zinc-800 dark:text-white">
-                  Rating Filter
+                <h3 className="font-bold text-zinc-800 dark:text-white mb-4">
+                  Rating Range
                 </h3>
                 <div className="font-semibold text-sm text-zinc-700 dark:text-white">
-                  <span className="font-semibold text-sm">
-                    Minimum rating: {ratingThreshold}
-                  </span>
-                  <Slider
-                    value={ratingThreshold}
-                    onChange={handleRatingChange}
-                    pt={{
-                      handle: {
-                        className:
-                          "bg-yellow-500 border-2 border-yellow-600 w-3 h-3 rounded-full cursor-pointer hover:bg-yellow-600 transition-colors",
-                      },
-                      range: {
-                        className: "bg-yellow-400 h-full absolute rounded-full",
-                      },
-                      root: {
-                        className:
-                          "mt-5 mb-10 bg-zinc-200 dark:bg-zinc-800 rounded-full h-2 relative",
-                      },
-                    }}
-                    min={0}
-                    max={10}
-                    step={1}
-                  />
+                  <div className="flex items-center gap-3">
+                    <div className="flex-1">
+                      <label className="text-xs text-zinc-500 block mb-1">
+                        From
+                      </label>
+                      <InputNumber
+                        value={ratingRange.min}
+                        onValueChange={(e) =>
+                          setRatingRange({ ...ratingRange, min: e.value ?? 0 })
+                        }
+                        showButtons
+                        buttonLayout="stacked"
+                        incrementButtonIcon="pi pi-angle-up"
+                        decrementButtonIcon="pi pi-angle-down"
+                        min={0}
+                        max={10} // Prevents "From" being higher than "To"
+                        minFractionDigits={1}
+                        maxFractionDigits={1}
+                        placeholder="0.0"
+                        inputClassName="w-full p-2 border rounded dark:bg-zinc-800 dark:border-zinc-700"
+                      />
+                    </div>
+
+                    <span className="mt-6 text-zinc-400">-</span>
+
+                    {/* TO BOX */}
+                    <div className="flex-1">
+                      <label className="text-xs text-zinc-500 block mb-1">
+                        To
+                      </label>
+                      <InputNumber
+                        value={ratingRange.max}
+                        onValueChange={(e) =>
+                          setRatingRange({ ...ratingRange, max: e.value ?? 10 })
+                        }
+                        showButtons
+                        buttonLayout="stacked"
+                        incrementButtonIcon="pi pi-angle-up"
+                        decrementButtonIcon="pi pi-angle-down"
+                        min={0}
+                        max={10}
+                        minFractionDigits={1}
+                        maxFractionDigits={1}
+                        placeholder="0.0"
+                        inputClassName="w-full p-2 border rounded dark:bg-zinc-800 dark:border-zinc-700"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
@@ -261,44 +302,5 @@ function Filter({
 }
 
 export default Filter;
-
-function YearsList({ movies, onYearChange, selectedYear }: YearsListProps) {
-  const uniqueYears = useMemo(() => {
-    if (!movies || movies.length === 0) return [];
-    const years = movies
-      .map(
-        (m) =>
-          m.movie.year ||
-          (m.movie.released ? new Date(m.movie.released).getFullYear() : null),
-      )
-      .filter((year): year is number => year !== null && year !== undefined);
-    return [...new Set(years)].sort((a, b) => b - a);
-  }, [movies]);
-
-  return (
-    <div className="bg-white dark:bg-black transition-colors duration-300">
-      <div className="p-3">
-        <ListBox
-          value={selectedYear}
-          onChange={(e) => onYearChange(e.value)}
-          options={uniqueYears}
-          className="w-full overflow-y-auto border-none shadow-none"
-          pt={{
-            root: { className: "bg-transparent border-none shadow-none" },
-            wrapper: { className: "bg-transparent dark:bg-zinc-900" },
-            item: ({ context }) => ({
-              className: [
-                "p-3 text-center transition-colors duration-150 cursor-pointer rounded-sm",
-                context.selected
-                  ? "bg-transparent text-yellow-500 dark:text-yellow-400 font-bold text-lg"
-                  : "text-zinc-800 dark:text-zinc-200 hover:text-yellow-500 dark:hover:text-yellow-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 bg-transparent",
-              ].join(" "),
-            }),
-          }}
-        />
-      </div>
-    </div>
-  );
-}
 
 export type { FilterProps };

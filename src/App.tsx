@@ -17,7 +17,13 @@ function App() {
   const navigate = useNavigate();
   const [movies, setMovies] = useState<TraktMovies[]>([]);
   const [watchlist, setWatchlist] = useState<TraktMovies[]>([]);
-  const [selectedYear, setSelectedYear] = useState<number | null>(null);
+  const [selectedYear, setSelectedYear] = useState<{
+    min: number;
+    max: number;
+  }>({
+    min: 1994,
+    max: 2026,
+  });
   const [isListView, setIsListView] = useState<boolean>(false);
   const [selectedGenres, setSelectedGenres] = useState<
     { name: string; key: string }[]
@@ -26,26 +32,33 @@ function App() {
   const [selectedFilter, setSelectedFilter] = useState<FilterOption | null>(
     null,
   );
-  const [ratingThreshold, setRatingThreshold] = useState<number>(0);
-  const [debouncedRating, setDebouncedRating] = useState<number>(0);
+  const [ratingRange, setRatingRange] = useState<{ min: number; max: number }>({
+    min: 0,
+    max: 0,
+  });
 
   const finalFilteredMovies = useMemo(() => {
     return movies.filter((m) => {
-      const mYear =
+      // Extract year safely
+      const movieYear =
         m.movie.year ||
-        (m.movie.released ? new Date(m.movie.released).getFullYear() : null);
-      const matchesYear = !selectedYear || mYear === selectedYear;
+        (m.movie.released ? new Date(m.movie.released).getFullYear() : 0);
+
+      const matchesYear =
+        movieYear >= selectedYear.min && movieYear <= selectedYear.max;
 
       const matchesGenre =
-        selectedGenres && selectedGenres.length > 0
+        selectedGenres.length > 0
           ? selectedGenres.some((g) => m.movie.genres?.includes(g.name))
           : true;
 
       const movieRating = m.movie?.rating ?? 0;
-      const matchesRating = movieRating >= ratingThreshold;
+      const matchesRating =
+        movieRating >= ratingRange.min && movieRating <= ratingRange.max;
+
       return matchesYear && matchesGenre && matchesRating;
     });
-  }, [movies, selectedYear, selectedGenres, ratingThreshold]);
+  }, [movies, selectedYear, selectedGenres, ratingRange]);
 
   const addToWatchlist = (movie: TraktMovies) => {
     if (!watchlist.find((m) => m.movie.ids.trakt === movie.movie.ids.trakt)) {
@@ -54,22 +67,24 @@ function App() {
   };
 
   const hasActiveFilters =
-    selectedYear !== null || selectedGenres.length > 0 || ratingThreshold > 0;
+    selectedYear.min > 1994 || // Changed: check if moved from default
+    selectedYear.max < 2026 ||
+    selectedGenres.length > 0 ||
+    ratingRange.min > 0 ||
+    ratingRange.max < 10;
 
   const clearAllFilters = () => {
-    setSelectedYear(null);
+    setSelectedYear({ min: 1994, max: 2026 });
     setSelectedGenres([]);
-    setRatingThreshold(0);
-    setDebouncedRating(0);
+    setRatingRange({ min: 0, max: 10 });
   };
 
   const goHome = () => {
     setOpenFilters(false);
     navigate("/");
-    setSelectedYear(null);
+    setSelectedYear({ min: 0, max: 10 });
     setSelectedGenres([]);
-    setRatingThreshold(0);
-    setDebouncedRating(0);
+    setRatingRange({ min: 0, max: 10 });
   };
 
   return (
@@ -117,13 +132,6 @@ function App() {
           />
 
           <Button
-            label="Filter"
-            icon="pi pi-filter"
-            onClick={() => setOpenFilters(!openFilters)}
-            unstyled
-            className="border:black dark:border-white! hover:black dark:hover:border-white-500! "
-          />
-          <Button
             label={`WatchList (${watchlist.length})`}
             icon="pi pi-eye"
             onClick={() => navigate("/watchlist")}
@@ -143,7 +151,7 @@ function App() {
               label={`Year: ${selectedYear}`}
               removable
               unstyled
-              onRemove={() => setSelectedYear(null)}
+              onRemove={() => setSelectedYear({ min: 0, max: 10 })}
               pt={{
                 root: {
                   className:
@@ -177,14 +185,13 @@ function App() {
               }}
             />
           ))}
-          {ratingThreshold > 0 && (
+          {(ratingRange.min > 0 || ratingRange.max < 10) && (
             <Chip
-              label={`Rating ≥ ${ratingThreshold}`}
+              label={`Rating: ${ratingRange.min} - ${ratingRange.max}`}
               removable
               unstyled
               onRemove={() => {
-                setRatingThreshold(0);
-                setDebouncedRating(0);
+                setRatingRange({ min: 0, max: 10 });
               }}
               pt={{
                 root: {
@@ -207,11 +214,12 @@ function App() {
               path="/"
               element={
                 <TrendingMovies
-                  movies={finalFilteredMovies}
+                  movies={movies}
                   setMovies={setMovies}
                   onAddToWatchlist={addToWatchlist}
                   isListView={isListView}
                   watchlist={watchlist}
+                  setIsListView={setIsListView}
                 />
               }
             />
@@ -233,9 +241,12 @@ function App() {
               path="/ListView"
               element={
                 <ListView
-                  movies={movies}
+                  goHome={goHome}
+                  movies={finalFilteredMovies}
                   watchlist={watchlist}
                   onAddToWatchlist={addToWatchlist}
+                  openFilters={openFilters}
+                  setOpenFilters={setOpenFilters}
                 />
               }
             />
@@ -254,10 +265,8 @@ function App() {
           setOpenFilters={setOpenFilters}
           selectedFilter={selectedFilter}
           setSelectedFilter={setSelectedFilter}
-          ratingThreshold={ratingThreshold}
-          setRatingThreshold={setRatingThreshold}
-          debouncedRating={debouncedRating}
-          setDebouncedRating={setDebouncedRating}
+          ratingRange={ratingRange}
+          setRatingRange={setRatingRange}
         />
       </main>
     </div>
