@@ -1,0 +1,130 @@
+/* src/styles/globals.css */
+
+/* ── PrimeReact base resets ── */
+.p-component {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* ── Dialog ── */
+.p-dialog {
+  background: white;
+  border: 1px solid #e4e4e7;
+  border-radius: 1rem;
+}
+.dark .p-dialog {
+  background: #000000;
+  border-color: #3f3f46;
+}
+.p-dialog .p-dialog-header {
+  background: white;
+  color: black;
+  border-bottom: 1px solid #f4f4f5;
+}
+.dark .p-dialog .p-dialog-header {
+  background: #000000;
+  color: white;
+  border-bottom-color: #27272a;
+}
+.p-dialog .p-dialog-content {
+  background: white;
+  color: black;
+}
+.dark .p-dialog .p-dialog-content {
+  background: #000000;
+  color: white;
+}
+.p-dialog .p-dialog-header-close {
+  color: black;
+  border-radius: 9999px;
+}
+.dark .p-dialog .p-dialog-header-close {
+  color: white;
+}
+.p-dialog .p-dialog-header-close:hover {
+  background: #f4f4f5;
+}
+.dark .p-dialog .p-dialog-header-close:hover {
+  background: #27272a;
+}
+
+/* ── ListBox ── */
+.p-listbox {
+  background: white !important;
+  border: 1px solid #e4e4e7 !important;
+  border-radius: 0.75rem;
+}
+.dark .p-listbox {
+  background: #18181b !important;
+  border-color: #3f3f46 !important;
+}
+.p-listbox .p-listbox-item {
+  color: #27272a !important;
+}
+.dark .p-listbox .p-listbox-item {
+  color: #e4e4e7 !important;
+}
+.p-listbox .p-listbox-item:hover {
+  background: #f9f9f9 !important;
+}
+.dark .p-listbox .p-listbox-item:hover {
+  background: #27272a !important;
+}
+.p-listbox .p-listbox-item.p-highlight {
+  background: transparent !important;
+  color: #eab308 !important;
+  font-weight: 600;
+}
+.p-listbox .p-listbox-item:focus,
+.p-listbox .p-listbox-item.p-focus,
+.p-listbox:not(.p-disabled)
+  .p-listbox-item:not(.p-highlight):not(.p-disabled).p-focus {
+  box-shadow: none !important;
+  outline: none !important;
+  background: transparent !important;
+}
+
+/* ── Carousel buttons ── */
+.p-carousel .p-carousel-prev,
+.p-carousel .p-carousel-next {
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border-radius: 9999px;
+}
+.p-carousel .p-carousel-prev:hover,
+.p-carousel .p-carousel-next:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+.p-carousel .p-carousel-indicators {
+  display: none !important;
+}
+
+/* ── Tooltip ── */
+.p-tooltip .p-tooltip-text {
+  background: #000000 !important;
+  color: #ffffff !important;
+  font-size: 0.85rem !important;
+  padding: 4px 8px;
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+/* ── Overlay Panel (year picker) ── */
+.year-overlay.p-overlaypanel::before,
+.year-overlay.p-overlaypanel::after {
+  display: none !important;
+}
+.year-overlay.p-overlaypanel {
+  width: 80px !important;
+  min-width: 80px !important;
+  max-width: 80px !important;
+}
+
+/* ── Scrollbar hide globally ── */
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}

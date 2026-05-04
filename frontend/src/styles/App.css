@@ -1,5 +1,5 @@
 body {
-  margin: 0;
+  /* margin: 0; */
   padding: 0;
 }
 
@@ -69,4 +69,22 @@ main {
   .p-chip {
     background-color: transparent; /* or your desired color */
   }
+}
+
+#h1 {
+  background-image: url("");
+  background-size: cover;
+  background-position: center;
+
+  /* 2. Clip the background to the text */
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  /* 3. Make the actual text color transparent so the image shows through */
+  color: transparent;
+
+  /* Optional: Make it bold/heavy so more of the image is visible */
+  font-size: 80px;
+  font-weight: 900;
+  text-transform: uppercase;
 }

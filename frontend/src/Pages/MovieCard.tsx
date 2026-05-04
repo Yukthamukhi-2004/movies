@@ -39,19 +39,19 @@ const MovieCard = ({
   if (!isListView) {
     return (
       <div className="h-full w-full">
-        <li className="list-none h-full w-400px mx-auto">
-          <div className="h-full w-full flex flex-col items-center bg-white dark:bg-zinc-900 rounded-xl overflow-hidden border border-gray-200 dark:border-zinc-700">
+        <li className="list-none h-full w-300px mx-auto">
+          <div className="h-full w-xs flex flex-col items-center bg-white dark:bg-zinc-900 rounded-xl overflow-hidden border border-gray-200 dark:border-zinc-700">
             {/* IMAGE — 70% */}
-            <div className="w-80 flex-[8] h-96 overflow-hidden flex justify-center items-center scale-x-110 object-cover rounded-xl">
+            <div className="w-90% flex-8 h-90 overflow-hidden flex justify-center items-center scale-x-120 object-cover">
               <img
                 src={posterUrl}
                 alt={item.movie.title}
-                className="w-full h-full object-cover"
+                className="w-full h-80 object-cover"
               />
             </div>
 
             {/* DETAILS — 30% */}
-            <div className="flex-[2] w-full flex flex-col items-center justify-center gap-1 px-3 py-2 bg-white dark:bg-zinc-900">
+            <div className="flex-2 w-full flex flex-col items-center justify-center gap-1 px-3 py-2 bg-white dark:bg-zinc-900">
               <span className="text-xs text-gray-500 dark:text-gray-400">
                 Released: {formattedReleaseDate}
               </span>
@@ -121,7 +121,7 @@ const MovieCard = ({
 
   // ✅ LIST VIEW — completely unchanged
   return (
-    <div className="h-full">
+    <div className="h-[24]">
       <li className="list-none h-full">
         <Tooltip
           target=".movie-title-tooltip"
@@ -133,28 +133,28 @@ const MovieCard = ({
         />
         <Card
           unstyled
-          className=" flex flex-row w-70% gap-4 h-[120px] bg-white dark:bg-zinc-900 border !border-zinc-300 dark:!border-zinc-700 rounded-xl"
+          className=" flex flex-row w-full gap-4 h-140px bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-xl"
           pt={{
             root: { className: "flex h-full flex-row" },
             body: { className: "p-4 flex flex-col min-w-0 overflow-hidden" },
             content: { className: "p-0" },
           }}
           header={
-            <div className="w-[200px] min-w-[100px] h-full m-2 shrink-0 overflow-hidden rounded-l-xl">
+            <div className="w-[220px] min-w-[200px] max-w-[200px] h-full shrink-0 m-2 overflow-hidden rounded-l-xl">
               <Image
                 src={posterUrl}
                 alt={item.movie.title}
                 unstyled
                 pt={{
-                  root: { className: "block w-full h-full" },
+                  root: { className: "block w-full h-80" },
                   image: { className: "w-full h-full object-cover block" },
                 }}
               />
             </div>
           }
         >
-          <div className="flex flex-col justify-items-start py-4 gap-6 mt-2">
-            <span className="text-md text-gray-700 dark:text-gray-300!">
+          <div className="flex flex-col justify-items-start h-full py-4 gap-6 mt-2">
+            <span className="text-md text-gray-700 dark:text-gray-300">
               Released on: {formattedReleaseDate}
             </span>
             <div className="w-full overflow-hidden">
@@ -176,7 +176,7 @@ const MovieCard = ({
             <p className="text-gray-600 dark:text-zinc-300! text-md line-clamp-4 leading-relaxed">
               {overview}
             </p>
-            <div className="flex flex-row justify-between items-center w-full !p-5">
+            <div className="flex flex-row justify-between w-full px-5">
               <Button
                 icon="pi pi-info-circle"
                 onClick={() => handleShowInfo(item)}
@@ -189,7 +189,7 @@ const MovieCard = ({
                       "flex items-center justify-center p-2 rounded-lg border-2 border-transparent text-black dark:!text-white hover:border-white dark:!hover:border-black transition-all",
                   },
                   label: { className: "hidden" },
-                  icon: { className: "text-xl" },
+                  icon: { className: "text-2xl" },
                 }}
               />
               <Button

@@ -1,0 +1,24 @@
+.p-button:not(:disabled):hover {
+  background: #ffffff;
+  color: #333131;
+  border-color: #a4a0a0;
+}
+
+.p-button {
+  color: #1b1b1b;
+  background: #ffffff;
+  border: 1px solid #a6a3a3;
+}
+/* 
+
+.p-listbox:not(.p-disabled).p-listbox-item:not(.p-highlight):not(
+    .p-disabled
+  ).p-focus {
+  background: rgb(222, 221, 221) !important;
+}
+ */
+
+.p-inputtext:enabled:focus {
+  box-shadow: none;
+  border-color: none;
+}

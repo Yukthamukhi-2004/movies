@@ -4,7 +4,6 @@ import type { TraktMovies } from "../types/trakt";
 import "../styles/PopUp.css";
 import { Skeleton } from "primereact/skeleton";
 import { Button } from "primereact/button";
-import "../styles/TrendingMovies.css";
 
 interface PopUpProps {
   visible: boolean;
@@ -59,16 +58,7 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
           setShowVideo(false);
           setVisible(false);
         }}
-        style={{
-          width: "50vw",
-          fontWeight: "bold",
-          paddingLeft: "10px",
-          paddingRight: "7px",
-          paddingBottom: "7px",
-          paddingTop: "7px",
-          borderRadius: "16px",
-          border: "solid 1px gray",
-        }}
+        className="w-[50vw] font-bold px-3 py-2 rounded-2xl border border-zinc-500"
         header={movie?.movie.title}
         pt={{
           root: {
@@ -91,9 +81,9 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
         }}
       >
         {movie ? (
-          <div className="bg-white dark:!bg-black top-0 transition-colors duration-300">
-            <div className="bg-white dark:!bg-black sticky">
-              <div className="movie-details bg-white dark:!bg-black text-black dark:!text-white p-4 items-center gap-10 transition-colors duration-300">
+          <div className="bg-white dark:bg-black top-0 transition-colors duration-300">
+            <div className="bg-white dark:bg-black sticky">
+              <div className="movie-details bg-white dark:bg-black text-black dark:text-white p-4 items-center gap-10 transition-colors duration-300">
                 <div className="flex flex-row justify-items-start gap-5">
                   <div className="m-3">
                     {posterUrl && (
@@ -108,8 +98,8 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
                       />
                     )}
                   </div>
-                  <div className="text-black dark:!text-white text-md font-normal">
-                    <strong className="font-black dark:!font-white tracking-wide">
+                  <div className="text-black dark:text-white text-md font-normal">
+                    <strong className="font-black dark:font-white tracking-wide">
                       {movie.movie.title}
                     </strong>
                     <p>{movie.movie.year}</p>
@@ -124,7 +114,7 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
                   </div>
                 </div>
 
-                <p className="font-black dark:!font-black font-medium ml-2 mt-5">
+                <p className="font-black dark:font-black font-md ml-2 mt-5">
                   <strong>Overview : </strong>
                   {movie.movie.overview || "No overview available"}
                 </p>
@@ -188,7 +178,7 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
                     {movie.movie.genres?.map((genre, index) => (
                       <span
                         key={index}
-                        className="genre-chip bg-gray-200 dark:!bg-zinc-800/80 text-black dark:!text-white px-4 py-1 text-lg rounded-full transition-colors duration-300"
+                        className="genre-chip bg-gray-200 dark:bg-zinc-800/80 text-black dark:text-white px-4 py-1 text-lg rounded-full transition-colors duration-300"
                       >
                         {genre}
                       </span>
@@ -196,7 +186,7 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
                   </div>
                 </div>
 
-                <div className="font-black dark:!font-white font-normal">
+                <div className="text-black dark:font-white font-normal">
                   <div>
                     Country : {movie.movie.country?.toUpperCase() || "N/A"}
                   </div>
@@ -210,10 +200,10 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
                       onClick={handleButtonClick}
                       disabled={!RedirectButton}
                       unstyled
-                      className={`max-w-[1000px] px-5 py-2 rounded-xl text-2xl font-bold tracking-wide transition-all ${
+                      className={`max-w-1000px px-5 py-2 rounded-xl text-2xl font-bold tracking-wide transition-all ${
                         RedirectButton
                           ? "bg-yellow-500 hover:bg-yellow-600 text-white hover:scale-101 shadow-lg shadow-yellow-500/30"
-                          : "bg-gray-200 text-gray-400 dark:!bg-zinc-300 dark:!text-zinc-900 cursor-not-allowed"
+                          : "bg-gray-200 text-gray-400 dark:bg-zinc-300 dark:text-zinc-900 cursor-not-allowed"
                       }`}
                     />
                   </div>

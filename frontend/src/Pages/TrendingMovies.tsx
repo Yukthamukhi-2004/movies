@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { TraktMovies } from "../types/trakt";
-import "primereact/resources/themes/lara-light-cyan/theme.css";
 import "primeicons/primeicons.css";
 import { Carousel } from "primereact/carousel";
 import { useNavigate } from "react-router-dom";
@@ -19,15 +18,14 @@ interface TrendingProps {
 
 function TrendingMovies({
   movies,
-  setMovies,
   onAddToWatchlist,
   watchlist,
   setIsListView,
 }: TrendingProps) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading] = useState<boolean>(false);
   const [openModel, setOpenModel] = useState<boolean>(false);
   const [selectedMovie, setSelectedMovie] = useState<TraktMovies | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
@@ -44,50 +42,6 @@ function TrendingMovies({
     { breakpoint: "767px", numVisible: 2, numScroll: 3 },
     { breakpoint: "575px", numVisible: 1, numScroll: 3 },
   ];
-
-  useEffect(() => {
-    async function fetchMovies(): Promise<void> {
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        const res = await fetch(
-          "https://api.trakt.tv/movies/trending?extended=full",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "trakt-api-version": "2",
-              "trakt-api-key":
-                "d18ef90d359e1b16311df076556165adf10f332dbf2301436a7fd23a7b4de19b",
-            },
-          },
-        );
-
-        if (!res.ok) {
-          if (res.status === 429) {
-            console.error("Rate limited! Wait a minute before refreshing.");
-          }
-          const errorText = await res.text();
-          throw new Error(`API error ${res.status}: ${errorText}`);
-        }
-
-        const data: unknown = await res.json();
-        const validData = (Array.isArray(data) ? data : []).filter(
-          (item): item is TraktMovies => Boolean(item?.movie?.ids?.trakt),
-        );
-
-        setMovies(validData);
-      } catch (err) {
-        console.error("Fetch Error:", err);
-        setError(err instanceof Error ? err.message : "Failed to load movies.");
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchMovies();
-  }, [setMovies]);
 
   return (
     <div className="bg-white p-2 md:p-4 dark:bg-black transition-colors duration-300">
@@ -110,18 +64,18 @@ function TrendingMovies({
             className="flex items-center group cursor-pointer gap-5 w-fit mb-6 ml-2"
             onClick={() => {
               setIsListView(true);
-              navigate("/ListView");
+              navigate("/ListView", { state: { source: "trending" } });
             }}
           >
             <div className="w-1.5 h-8 bg-yellow-500 rounded-sm mr-3"></div>
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
               Trending Movies
-              <ChevronRightIcon className="w-6 h-6 ml-2 text-gray-400 group-hover:text-yellow-500 transition-colors" />
+              <ChevronRightIcon className="w-7 h-9 ml-2 text-gray-200 group-hover:text-yellow-500 transition-colors" />
             </h3>
           </div>
 
           {/* Movie Slider */}
-          <div className="carousel-demo w-overflow-hidden ">
+          <div className="carousel-demo w-overflow-hidden no-scrollbar scroll-smooth ">
             <Carousel
               value={movies.slice(0, 20)}
               numVisible={5}
@@ -129,18 +83,18 @@ function TrendingMovies({
               circular={false}
               responsiveOptions={responsiveOptions}
               pt={{
-                root: { className: "max-h-[550px] relative " },
+                root: { className: "max-h-[450px] relative " },
                 content: { className: "overflow-hidden" },
-                container: { className: "flex h-full" },
-                itemsContainer: { className: "flex flex-row " },
-                item: { className: "flex-shrink-0 w-full h-full " },
+                container: { className: "flex h-80%" },
+                itemsContainer: { className: "flex flex-row" },
+                item: { className: "h-full  " },
                 previousButton: {
                   className:
-                    "absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/80 text-white rounded-full",
+                    "absolute left-0 top-1/2 translate-x-2 z-10 font-bold bg-black/50 border-1px rounded dark:border-1px rounded px-2 py-1.5 hover:bg-black/80 text-white rounded-full",
                 },
                 nextButton: {
                   className:
-                    "absolute right-0 top-1/2  -translate-y-1/2  z-10 bg-black/50 hover:bg-black/80 text-white rounded-full",
+                    "absolute right-0 top-1/2 translate-x-2 z-10 font-bold bg-black/50 border-1px rounded dark:border-1px rounded px-2 py-1.5 hover:bg-black/80 text-white rounded-full",
                 },
                 indicators: { className: "hidden!" },
               }}
@@ -151,13 +105,13 @@ function TrendingMovies({
                   ) || false;
 
                 return (
-                  <div className="px-1.5 h-[540px] w-auto pb-2">
+                  <div className="px-1.5 h-500px w-auto pb-2">
                     <MovieCard
                       item={item}
                       handleShowInfo={handleShowInfo}
                       onAddToWatchlist={onAddToWatchlist}
-                      isListView={false}
                       isAdded={isAdded}
+                      isListView={false}
                       tooltip={null}
                     />
                   </div>

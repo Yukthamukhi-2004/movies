@@ -41,7 +41,7 @@ function WatchList({ items, onRemove, onClear }: WatchlistProps) {
                       <img
                         src={posterUrl}
                         alt={item.movie.title}
-                        className="w-full  object-cover rounded-lg"
+                        className="w-full object-cover rounded-lg"
                       />
                     </div>
                     <div style={{ fontSize: "1.1rem" }}>
