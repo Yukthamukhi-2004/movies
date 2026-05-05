@@ -6,6 +6,8 @@ import ListView from "./Pages/ListView";
 import WatchList from "./Pages/WatchList";
 import TonightPage from "./Pages/Tonightpage";
 import TopMovies from "./Pages/Topmovies";
+import BrowseInterests from "./Pages/BrowseInterests";
+import { GenrePage, LanguagePage } from "./Pages/GenreLanguagePage";
 import "primeicons/primeicons.css";
 import "./styles/App.css";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
@@ -379,17 +381,40 @@ function App() {
                       setIsListView={setIsListView}
                       topTenMovies={topTenMovies}
                     />
+                    <button
+                      className="border rounded-2xl w-3xl h-12 mt-6 ml-130 "
+                      onClick={() => {
+                        setIsListView(true);
+                        navigate("/ListView", { state: { source: "top10" } });
+                      }}
+                    >
+                      See All
+                    </button>
                   </div>
-                  <button
-                    className="border rounded-2xl w-3xl h-12 mt-6 ml-130 "
-                    onClick={() => {
-                      setIsListView(true);
-                      navigate("/ListView", { state: { source: "top10" } });
-                    }}
-                  >
-                    See All
-                  </button>
+                  <div className="mt-10">
+                    <BrowseInterests movies={movies} />
+                  </div>
                 </>
+              }
+            />
+            <Route
+              path="/genre/:genre"
+              element={
+                <GenrePage
+                  movies={movies}
+                  onAddToWatchlist={addToWatchlist}
+                  watchlist={watchlist}
+                />
+              }
+            />
+            <Route
+              path="/language/:lang"
+              element={
+                <LanguagePage
+                  movies={movies}
+                  onAddToWatchlist={addToWatchlist}
+                  watchlist={watchlist}
+                />
               }
             />
             <Route

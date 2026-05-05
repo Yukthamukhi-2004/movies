@@ -186,7 +186,7 @@ function PopUp({ visible, setVisible, movie }: PopUpProps) {
                   </div>
                 </div>
 
-                <div className="text-black dark:font-white font-normal">
+                <div className="text-black dark:text-white font-normal">
                   <div>
                     Country : {movie.movie.country?.toUpperCase() || "N/A"}
                   </div>

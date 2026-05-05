@@ -7,11 +7,13 @@ const TodoListView = () => {
   const store = useStore();
 
   return (
-    <ul>
-      {store.todos.map((todo) => (
-        <li key={todo.id}>{todo.title}</li>
-      ))}
-    </ul>
+    <div>
+      <ul>
+        {store.todos.map((todo) => (
+          <li key={todo.id}>{todo.title}</li>
+        ))}
+      </ul>
+    </div>
   );
 };
 

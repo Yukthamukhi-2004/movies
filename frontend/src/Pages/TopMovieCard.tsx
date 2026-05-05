@@ -44,10 +44,14 @@ const TopMovieCard = ({
         <li className="list-none h-full  mx-auto">
           <div className="h-95% w-full flex flex-row gap-3 items-center bg-white dark:bg-zinc-900 rounded-xl overflow-hidden border border-gray-200 dark:border-zinc-700">
             <div className="w-[250px] relative flex-shrink-0 self-stretch ml-2 my-2 ">
-              <img
+              <Image
                 src={posterUrl}
                 alt={item.movie.title}
-                className="w-full h-95 object-cover border rounded-xl border-none"
+                unstyled
+                pt={{
+                  root: { className: "block w-full h-80" },
+                  image: { className: "w-full h-full object-cover block" },
+                }}
               />
             </div>
 
@@ -58,58 +62,60 @@ const TopMovieCard = ({
                   #{index + 1}
                 </span>
               </div>
-              <span className="text-xs text-gray-500 dark:text-gray-400">
-                Released: {formattedReleaseDate}
-              </span>
-              <Tooltip
-                target=".movie-title-tooltip"
-                mouseTrack
-                mouseTrackTop={15}
-                position="top"
-                showDelay={0}
-                hideDelay={100}
-              />
-              <div className="flex flex-col items-center gap-6">
-                <strong
-                  className="movie-title-tooltip text-lg text-black dark:text-white font-bold cursor-pointer hover:underline line-clamp-2 w-full text-center"
-                  data-pr-tooltip={item.movie.title}
-                  onClick={() => handleShowInfo(item)}
-                >
-                  {item.movie.title || "Untitled"}
-                </strong>
-
-                <div className="text-md text-gray-500 dark:text-gray-300 flex items-center gap-2 flex-wrap justify-center">
-                  <span>{item.movie.year || "N/A"}</span>
-                  <span>
-                    | ⭐{" "}
-                    {item.movie.rating ? item.movie.rating.toFixed(1) : "N/A"}
-                  </span>
-                  <span>| {item.movie.runtime || 0}m</span>
-                </div>
-                <span
-                  className="border border-zinc-300 dark:border-zinc-600 text-zinc-500 px-1.5
-            py-0.5 rounded "
-                >
-                  {item.movie.certification}
+              <div className="mt-2.5">
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  Released: {formattedReleaseDate}
                 </span>
-                <p className="text-gray-700 dark:text-zinc-300 text-md line-clamp-4 leading-relaxed">
-                  {overview}
-                </p>
-
-                <Button
-                  label={isAdded ? "Added" : "Add to Watchlist"}
-                  icon={isAdded ? "pi pi-check" : "pi pi-plus"}
-                  onClick={handleInternalClick}
-                  unstyled
-                  pt={{
-                    root: {
-                      className:
-                        "flex items-center gap-1.5 px-2 py-1.5 text-black dark:!text-white rounded-lg border-2 border-transparent hover:border-white dark:!hover:border-zinc-500 transition-all",
-                    },
-                    label: { className: "font-bold tracking-wide text-xs" },
-                    icon: { className: "text-xs" },
-                  }}
+                <Tooltip
+                  target=".movie-title-tooltip"
+                  mouseTrack
+                  mouseTrackTop={15}
+                  position="top"
+                  showDelay={0}
+                  hideDelay={100}
                 />
+                <div className="flex flex-col items-center gap-6">
+                  <strong
+                    className="movie-title-tooltip text-lg text-black dark:text-white font-bold cursor-pointer hover:underline line-clamp-2 w-full text-center"
+                    data-pr-tooltip={item.movie.title}
+                    onClick={() => handleShowInfo(item)}
+                  >
+                    {item.movie.title || "Untitled"}
+                  </strong>
+
+                  <div className="text-md text-gray-500 dark:text-gray-300 flex items-center gap-2 flex-wrap justify-center">
+                    <span>{item.movie.year || "N/A"}</span>
+                    <span>
+                      | ⭐{" "}
+                      {item.movie.rating ? item.movie.rating.toFixed(1) : "N/A"}
+                    </span>
+                    <span>| {item.movie.runtime || 0}m</span>
+                  </div>
+                  <span
+                    className="border border-zinc-300 dark:border-zinc-600 text-zinc-500 px-1.5
+            py-0.5 rounded "
+                  >
+                    {item.movie.certification}
+                  </span>
+                  <p className="text-gray-700 dark:text-zinc-300 text-md line-clamp-4 leading-relaxed">
+                    {overview}
+                  </p>
+
+                  <Button
+                    label={isAdded ? "Added" : "Add to Watchlist"}
+                    icon={isAdded ? "pi pi-check" : "pi pi-plus"}
+                    onClick={handleInternalClick}
+                    unstyled
+                    pt={{
+                      root: {
+                        className:
+                          "flex items-center gap-1.5 px-2 py-1.5 text-black dark:!text-white rounded-lg border-2 border-transparent hover:border-white dark:!hover:border-zinc-500 transition-all",
+                      },
+                      label: { className: "font-bold tracking-wide text-xs" },
+                      icon: { className: "text-xs" },
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -135,8 +141,10 @@ const TopMovieCard = ({
           className=" flex flex-row w-full gap-4 h-140px bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-xl"
           pt={{
             root: { className: "flex h-full flex-row" },
-            body: { className: "p-4 flex flex-col min-w-0 overflow-hidden" },
-            content: { className: "p-0" },
+            body: {
+              className: "p-4 flex flex-col w-full min-w-0 overflow-hidden",
+            },
+            content: { className: "p-0 w-full" },
           }}
           header={
             <div className="w-[220px] min-w-[200px] max-w-[200px] h-full shrink-0 m-2 overflow-hidden rounded-l-xl">
@@ -156,7 +164,7 @@ const TopMovieCard = ({
             <span className="text-md text-gray-700 dark:text-gray-300">
               Released on: {formattedReleaseDate}
             </span>
-            <div className="w-full overflow-hidden">
+            <div className="w-full overflow-hidden flex flex-row gap-4">
               <strong
                 className="movie-title-tooltip text-xl md:text-2xl text-black dark:text-white! font-bold cursor-pointer hover:underline truncate"
                 data-pr-tooltip={item.movie.title}
@@ -164,6 +172,12 @@ const TopMovieCard = ({
               >
                 {item.movie.title || "Untitled"}
               </strong>
+              <span
+                className="border border-zinc-300 dark:border-zinc-600 text-zinc-500 px-1.5
+            py-0.5 rounded "
+              >
+                {item.movie.certification}
+              </span>
             </div>
             <div className="text-lg text-gray-500 dark:text-white! flex items-center gap-4">
               <span>{item.movie.year || "N/A"}</span>
